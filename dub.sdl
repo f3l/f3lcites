@@ -1,0 +1,7 @@
+name "f3lcites"
+description "Store and recall Cites."
+copyright "Copyright © 2016, Oliver Rümpelein, F3L-Team"
+authors "Oliver Rümpelein, F3L-Team"
+license "MIT"
+dependency "vibe-d" version="~>0.7.23"
+versions "VibeDefaultMain"
