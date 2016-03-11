@@ -1,4 +1,5 @@
 import vibe.d;
+import mysql;
 
 shared static this()
 {
