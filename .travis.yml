@@ -1,0 +1,18 @@
+language: d
+
+cache:
+  directories:
+    $HOME/.dub/
+
+d:
+  - dmd
+  - ldc
+  - gdc
+
+notifications:
+  email: false
+  irc:
+    channels:
+      "http://www.hackint.org#F3L"
+    on_success: change
+    on_failure: always
