@@ -1,5 +1,4 @@
 import vibe.d;
-import mysql;
 import f3lcites.cite;
 
 final class CiteSystem {

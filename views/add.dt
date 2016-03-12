@@ -5,5 +5,5 @@ block content
     Add a cite to the DB.
   form(action="added", method="POST")
     input#inputLine(type="text", name="cite", autofocus=true)
-  button(type="submit") Add
+    button(type="submit") Add
   
