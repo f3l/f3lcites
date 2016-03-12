@@ -1,0 +1,7 @@
+html
+  head
+    title F3LCites - #{title}
+  body
+    block menu
+      p Some menu later
+    block content
