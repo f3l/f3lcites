@@ -26,22 +26,34 @@ final class CiteSystem {
     import std.conv;
     private Cite[] cites;
 
-    void get(string title="Index")
+    private string chooseCite() const {
+        return (cites.length == 0)
+            ? "No cites in DB"
+            : cites[(uniform(0, cites.length))].cite;
+    }
+    
+    void get()
     {
+        string title="Index";
         render!("index.dt", title);
     }
 
+    void getRandomPlain()
+    {
+        string quote = this.chooseCite();
+        render!("random_plain.dt", quote);
+    }
+    
     void getRandom()
     {
-        // Get random quote if one exists
-        string quote = (cites.length == 0)
-            ? ""
-            : cites[(uniform(0, cites.length))].cite;
-        render!("random.dt", quote);
+        string title = "Random Quote";
+        string quote = this.chooseCite();
+        render!("random.dt", title, quote);
     }
 
-    void getAdd(string title="Add new Quote")
+    void getAdd()
     {
+        string title="Add new Quote";
         render!("add.dt", title);
     }
 
