@@ -3,5 +3,5 @@ html
     title F3LCites - #{title}
   body
     block menu
-      p Some menu later
+      include basemenu
     block content
