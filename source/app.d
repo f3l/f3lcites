@@ -31,9 +31,12 @@ final class CiteSystem {
         render!("index.dt", title);
     }
 
-    void getRandom() // ~ GET random
+    void getRandom()
     {
-        string quote = cites[(uniform(0, cites.length))].cite;
+        // Get random quote if one exists
+        string quote = (cites.length == 0)
+            ? ""
+            : cites[(uniform(0, cites.length))].cite;
         render!("random.dt", quote);
     }
 
