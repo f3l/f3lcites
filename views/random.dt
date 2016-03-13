@@ -1,1 +1,5 @@
-| #{quote}
+extends ./layout
+
+block content
+  div 
+    include random_plain
