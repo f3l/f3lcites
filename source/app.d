@@ -74,7 +74,7 @@ shared static this()
 	settings.port = 8088;
 	settings.bindAddresses = ["::1", "127.0.0.1"];
 	listenHTTP(settings, router);
-	logInfo("Please open http://127.0.0.1:" ~ settings.port ~ "/ in your browser.");
+	logInfo("Please open http://127.0.0.1:" ~ to!string(settings.port) ~ "/ in your browser.");
 }
 
 unittest
