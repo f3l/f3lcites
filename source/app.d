@@ -22,9 +22,6 @@ private:
         redis.quit;
     }
 
-    invariant{
-    }
-
     string chooseCite() {
         size_t zlen = db.zcard(dbKey);
         if ( zlen == 0 ) {
@@ -32,7 +29,14 @@ private:
         } else {
             size_t ranIndex = uniform(0, zlen);
             // zrange has inclusive start/stop
-            return db.zrange(dbKey, ranIndex, ranIndex).front.to!string;
+            auto result = db.zrange(dbKey, ranIndex, ranIndex);
+            // We need to make sure that noone altered the DB during
+            // generation of our random value!
+            if (result.hasNext) {
+                return result.front.to!string;
+            } else {
+                return "No cites in DB";
+            }
         }
     }
 
