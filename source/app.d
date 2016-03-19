@@ -5,6 +5,7 @@ import std.string;
 import std.algorithm: map;
 
 final class CiteSystem {
+private:
     import std.random: uniform;
     import std.conv;
 
@@ -21,16 +22,21 @@ final class CiteSystem {
         redis.quit;
     }
 
-    private string chooseCite() {
-        size_t llen = db.llen(dbKey);
-        if ( llen == 0 ) {
+    invariant{
+    }
+
+    string chooseCite() {
+        size_t zlen = db.zcard(dbKey);
+        if ( zlen == 0 ) {
             return "No cites in DB";
         } else {
-            size_t ranIndex = uniform(0, llen);
-            return db.lindex(dbKey, ranIndex);
+            size_t ranIndex = uniform(0, zlen);
+            // zrange has inclusive start/stop
+            return db.zrange(dbKey, ranIndex, ranIndex).front.to!string;
         }
     }
 
+public:
     void get()
     {
         string title="Index";
@@ -53,8 +59,9 @@ final class CiteSystem {
     void getAll()
     {
         string title ="All quotes";
-        auto cites = db.lrange(dbKey, 0, -1);
-        size_t llen = db.llen(dbKey);
+        // Sort with descending key, e.g. newest quote in front
+        auto cites = db.zrevRange(dbKey, 0, -1);
+        size_t llen = db.zcard(dbKey);
         render!("all.dt", title, cites, llen);
     }
 
@@ -66,7 +73,7 @@ final class CiteSystem {
 
     void postAdded(string cite)
     {
-        db.lpush(dbKey, cite);
+        db.zadd(dbKey, db.zcard(dbKey), cite);
         redirect("");
     }
 }
