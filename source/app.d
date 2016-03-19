@@ -1,36 +1,34 @@
 import vibe.d;
+import vibe.db.redis.redis;
 import std.conv;
 import std.string;
 import std.algorithm: map;
 
-struct Cite
-{
-    string text;
-
-    @property string cite() const
-    {
-        return to!string(text);
-    }
-
-    void toString(scope void delegate(const(char)[]) sink) const
-    {
-        sink(text);
-    }
-
-    void edit(in string text) {
-        this.text = text;
-    }
-}
-
 final class CiteSystem {
     import std.random: uniform;
     import std.conv;
-    private Cite[] cites;
 
-    private string chooseCite() const {
-        return (cites.length == 0)
-            ? "No cites in DB"
-            : cites[(uniform(0, cites.length))].cite;
+    enum string dbKey = "Cites";
+    RedisClient redis;
+    RedisDatabase db;
+
+    this() {
+        redis = new RedisClient();
+        db = redis.getDatabase(0);
+    }
+
+    ~this() {
+        redis.quit;
+    }
+
+    private string chooseCite() {
+        size_t llen = db.llen(dbKey);
+        if ( llen == 0 ) {
+            return "No cites in DB";
+        } else {
+            size_t ranIndex = uniform(0, llen);
+            return db.lindex(dbKey, ranIndex);
+        }
     }
 
     void get()
@@ -55,8 +53,9 @@ final class CiteSystem {
     void getAll()
     {
         string title ="All quotes";
-        string[] tcites = cites.dup.map!(a => to!string(a)).array();
-        render!("all.dt", title, tcites);
+        auto cites = db.lrange(dbKey, 0, -1);
+        size_t llen = db.llen(dbKey);
+        render!("all.dt", title, cites, llen);
     }
 
     void getAdd()
@@ -67,7 +66,7 @@ final class CiteSystem {
 
     void postAdded(string cite)
     {
-        cites ~= Cite(cite);
+        db.lpush(dbKey, cite);
         redirect("");
     }
 }
@@ -83,10 +82,4 @@ shared static this()
     settings.bindAddresses = ["::1", "127.0.0.1"];
     listenHTTP(settings, router);
     logInfo("Please open http://127.0.0.1:" ~ to!string(settings.port) ~ "/ in your browser.");
-}
-
-unittest
-{
-    auto testcite = Cite("pheerai: That was easy");
-    assert(testcite.to!string == "pheerai: That was easy");
 }
