@@ -1,7 +1,8 @@
 extends ./layout
 
 block content
-  p Add a quote to the DB.
+  p Add a quote to the DB. Please use “–” to split between different parties, e.g.:
+  p#example asdil1991: „Oli, sind wir Freaks?“ – pheerai: „Nein, WIR doch nicht!“
   form(action="added", method="POST")
     textarea#inputField(type="text", name="cite", autofocus=true)
     button(type="submit") Add
