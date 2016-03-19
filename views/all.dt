@@ -1,0 +1,8 @@
+extends ./layout
+
+block content
+  - size_t number = tcites.length;
+  p All #{number} cites known:
+  div(id="citebody")
+    - foreach(string cite; tcites)
+      p(class="cite") #{cite}

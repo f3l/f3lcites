@@ -1,11 +1,12 @@
 import vibe.d;
 import std.conv;
 import std.string;
+import std.algorithm: map;
 
 struct Cite
 {
     string text;
-    
+
     @property string cite() const
     {
         return to!string(text);
@@ -31,7 +32,7 @@ final class CiteSystem {
             ? "No cites in DB"
             : cites[(uniform(0, cites.length))].cite;
     }
-    
+
     void get()
     {
         string title="Index";
@@ -43,12 +44,19 @@ final class CiteSystem {
         string quote = this.chooseCite();
         render!("random_plain.dt", quote);
     }
-    
+
     void getRandom()
     {
         string title = "Random Quote";
         string quote = this.chooseCite();
         render!("random.dt", title, quote);
+    }
+
+    void getAll()
+    {
+        string title ="All quotes";
+        string[] tcites = cites.dup.map!(a => to!string(a)).array();
+        render!("all.dt", title, tcites);
     }
 
     void getAdd()
@@ -71,10 +79,10 @@ shared static this()
     router.get("*", serveStaticFiles("public/"));
 
     auto settings = new HTTPServerSettings;
-	settings.port = 8080;
-	settings.bindAddresses = ["::1", "127.0.0.1"];
-	listenHTTP(settings, router);
-	logInfo("Please open http://127.0.0.1:8080/ in your browser.");
+    settings.port = 8088;
+    settings.bindAddresses = ["::1", "127.0.0.1"];
+    listenHTTP(settings, router);
+    logInfo("Please open http://127.0.0.1:" ~ to!string(settings.port) ~ "/ in your browser.");
 }
 
 unittest
