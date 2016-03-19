@@ -1,6 +1,7 @@
 import vibe.d;
 import std.conv;
 import std.string;
+import std.algorithm: map;
 
 struct Cite
 {
@@ -51,6 +52,13 @@ final class CiteSystem {
         render!("random.dt", title, quote);
     }
 
+    void getAll()
+    {
+        string title ="All quotes";
+        string[] tcites = cites.dup.map!(a => to!string(a)).array();
+        render!("all.dt", title, tcites);
+    }
+    
     void getAdd()
     {
         string title="Add new Quote";

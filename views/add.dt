@@ -3,6 +3,5 @@ extends ./layout
 block content
   p Add a quote to the DB.
   form(action="added", method="POST")
-    input#inputLine(type="text", name="cite", autofocus=true)
+    textArea#inputField(type="text", name="cite", autofocus=true)
     button(type="submit") Add
-  
