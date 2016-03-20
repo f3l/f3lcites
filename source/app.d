@@ -20,11 +20,11 @@ private:
     }
 
     string chooseCite() {
-        size_t zlen = db.zcard(dbKey);
+        long zlen = db.zcard(dbKey);
         if ( zlen == 0 ) {
             return "No cites in DB";
         } else {
-            size_t ranIndex = uniform(0, zlen);
+            long ranIndex = uniform(0, zlen);
             // zrange has inclusive start/stop
             auto result = db.zrange(dbKey, ranIndex, ranIndex);
             // We need to make sure that noone altered the DB during
@@ -58,7 +58,7 @@ public:
         string title ="All quotes";
         // Sort with descending key, e.g. newest quote in front
         auto cites = db.zrevRange(dbKey, 0, -1);
-        size_t llen = db.zcard(dbKey);
+        long llen = db.zcard(dbKey);
         render!("all.dt", title, cites, llen);
     }
 
