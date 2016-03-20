@@ -1,8 +1,7 @@
 extends ./layout
 
 block content
-  - size_t number = tcites.length;
-  p All #{number} cites known:
+  p All #{llen} cites known:
   div(id="citebody")
-    - foreach(string cite; tcites)
+    - foreach(string cite; cites)
       p(class="cite") #{cite}
