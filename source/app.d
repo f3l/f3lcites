@@ -68,6 +68,8 @@ public:
     }
 
     void postAdded(string cite) {
+        // string.replace is broken in gdc without this.
+        import std.array: replace;
         // the cite may contain newlines. Those might be "\n", "\r" or "\r\n"…
         string addedCite = cite
             .replace("\r\n", " – ")
