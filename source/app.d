@@ -1,13 +1,10 @@
 import vibe.d;
 import vibe.db.redis.redis;
 import std.conv;
-import std.string;
-import std.algorithm: map;
 
 final class CiteSystem {
 private:
     import std.random: uniform;
-    import std.conv;
 
     enum string dbKey = "Cites";
     RedisClient redis;
@@ -41,27 +38,23 @@ private:
     }
 
 public:
-    void get()
-    {
+    void get() const {
         string title="Index";
         render!("index.dt", title);
     }
 
-    void getRandomPlain()
-    {
+    void getRandomPlain() {
         string quote = this.chooseCite();
         render!("random_plain.dt", quote);
     }
 
-    void getRandom()
-    {
+    void getRandom() {
         string title = "Random Quote";
         string quote = this.chooseCite();
         render!("random.dt", title, quote);
     }
 
-    void getAll()
-    {
+    void getAll() {
         string title ="All quotes";
         // Sort with descending key, e.g. newest quote in front
         auto cites = db.zrevRange(dbKey, 0, -1);
@@ -69,21 +62,23 @@ public:
         render!("all.dt", title, cites, llen);
     }
 
-    void getAdd()
-    {
+    void getAdd() const {
         string title="Add new Quote";
         render!("add.dt", title);
     }
 
-    void postAdded(string cite)
-    {
-        db.zadd(dbKey, db.zcard(dbKey), cite);
+    void postAdded(string cite) {
+        // the cite may contain newlines. Those might be "\n", "\r" or "\r\n"…
+        string addedCite = cite
+            .replace("\r\n", " – ")
+            .replace("\r", " – ")
+            .replace("\n", " – ");
+        db.zadd(dbKey, db.zcard(dbKey), addedCite);
         redirect("");
     }
 }
 
-shared static this()
-{
+shared static this() {
     auto router = new URLRouter;
     router.registerWebInterface(new CiteSystem);
     router.get("*", serveStaticFiles("public/"));
