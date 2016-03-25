@@ -83,7 +83,7 @@ public:
 shared static this() {
     auto router = new URLRouter;
     router.registerWebInterface(new CiteSystem);
-    router.get("*", serveStaticFiles("public/"));
+    router.get("*", serveStaticFiles("static/"));
 
     auto settings = new HTTPServerSettings;
     settings.port = 8088;
