@@ -1,6 +1,5 @@
 div(class="menu", id="menu")
-  a#menuitem(href="/") Home
-  a#menuitem(href="/add") Add new
-  a#menuitem(href="/all") All quotes
-  a#menuitem(href="/random") Get random quote
-  
+  a(class="menuitem", href="/") Home
+  a(class="menuitem", href="/add") Add new
+  a(class="menuitem", href="/all") All quotes
+  a(class="menuitem", href="/random") Get random quote

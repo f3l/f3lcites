@@ -1,7 +1,7 @@
 extends ./layout
 
 block content
-  p All #{llen} cites known:
+  p#desc All #{llen} cites known:
   div(id="citebody")
     - foreach(string cite; cites)
       p(class="cite") #{cite}
