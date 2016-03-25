@@ -86,8 +86,9 @@ shared static this() {
     router.get("*", serveStaticFiles("static/"));
 
     auto settings = new HTTPServerSettings;
-    settings.port = 8088;
-    settings.bindAddresses = ["::1", "127.0.0.1"];
+    settings.port = readRequiredOption!(ushort)("p|port", "Port to run software on");
+    settings.bindAddresses = ["127.0.0.1", "::1"];
+    if (!finalizeCommandLineOptions()) return;
     listenHTTP(settings, router);
     logInfo("Please open http://127.0.0.1:" ~ to!string(settings.port) ~ "/ in your browser.");
 }
