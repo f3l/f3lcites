@@ -1,4 +1,5 @@
 extends ./layout
 
 block content
-  p You may be able to add, view and edit F3Lcites quite soon!
+  p#desc Willkommen auf der internen Zitat-Datenbank des F3L-Teams!
+  p Hier können Zitat hinzugefügt sowie die bereits eingepflegten betrachtet werden.
