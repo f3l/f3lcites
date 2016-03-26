@@ -6,13 +6,14 @@ final class CiteSystem {
 private:
     import std.random: uniform;
 
-    enum string dbKey = "Cites";
+    string dbKey;
     RedisClient redis;
     RedisDatabase db;
 
-    this() {
+    this(string dbKey = "Cites") {
         redis = new RedisClient();
         db = redis.getDatabase(0);
+        this.dbKey = dbKey;
     }
 
     ~this() {
@@ -81,14 +82,36 @@ public:
 }
 
 shared static this() {
-    auto router = new URLRouter;
-    router.registerWebInterface(new CiteSystem);
-    router.get("*", serveStaticFiles("static/"));
-
+    // Parameter parsing
     auto settings = new HTTPServerSettings;
-    settings.port = readRequiredOption!(ushort)("p|port", "Port to run software on");
-    settings.bindAddresses = ["127.0.0.1", "::1"];
-    if (!finalizeCommandLineOptions()) return;
+
+    ushort port;
+    if(readOption("p|port", &port, "Port to run software on")) {
+        settings.port = port;
+    }
+
+    string address;
+    if(readOption("a|address", &address, "Addresses to listen on")) {
+        // This is quie ugly. I would prefer something more straight forward.
+        settings.bindAddresses =
+            address.parseJson().deserializeJson!(string[])();
+    }
+
+    string dbKey;
+    readOption("d|dbkey", &dbKey, "Key for cites within DB");
+
+    // Web-Routing
+    auto router = new URLRouter;
+    router.registerWebInterface(
+        (dbKey)
+        ? new CiteSystem(dbKey)
+        : new CiteSystem);
+    router.get("*", serveStaticFiles("static/"));
     listenHTTP(settings, router);
-    logInfo("Please open http://127.0.0.1:" ~ to!string(settings.port) ~ "/ in your browser.");
+
+    logInfo("Please open http://"
+            ~ to!string(settings.bindAddresses[0])
+            ~ ":"
+            ~ to!string(settings.port)
+            ~ "/ in your browser.");
 }
