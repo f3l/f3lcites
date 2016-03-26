@@ -1,7 +1,8 @@
 extends ./layout
 
 block content
-  p#desc Add a quote to the DB.
+  p#desc Neue Zitate hinzufügen.
+  p Visuelle Trennungen bitte durch einen Zeilenumbruch kennzeichnen (wird ersetzt durch „ – “).
   form(action="added", method="POST")
     textarea#inputField(type="text", name="cite", autofocus=true)
     button(id="submit_add", type="submit") Zitat hinzufügen

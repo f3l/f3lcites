@@ -50,13 +50,13 @@ public:
     }
 
     void getRandom() {
-        string title = "Random Quote";
+        string title = "Zufälliges Zitat";
         string quote = this.chooseCite();
         render!("random.dt", title, quote);
     }
 
     void getAll() {
-        string title ="All quotes";
+        string title ="Alle Zitate";
         // Sort with descending key, e.g. newest quote in front
         auto cites = db.zrevRange(dbKey, 0, -1);
         long llen = db.zcard(dbKey);
@@ -64,7 +64,7 @@ public:
     }
 
     void getAdd() const {
-        string title="Add new Quote";
+        string title="Zitat hinzufügen";
         render!("add.dt", title);
     }
 
