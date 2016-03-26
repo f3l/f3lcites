@@ -106,7 +106,6 @@ shared static this() {
         (dbKey)
         ? new CiteSystem(dbKey)
         : new CiteSystem);
-    router.get("*", serveStaticFiles("static/"));
     listenHTTP(settings, router);
 
     logInfo("Please open http://"
