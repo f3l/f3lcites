@@ -60,7 +60,8 @@ public:
         // Sort with descending key, e.g. newest quote in front
         auto cites = db.zrevRange(dbKey, 0, -1);
         long llen = db.zcard(dbKey);
-        render!("all.dt", title, cites, llen);
+        long start = llen;
+        render!("all.dt", title, cites, llen, start);
     }
 
     void getAdd() const {

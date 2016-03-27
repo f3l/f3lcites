@@ -53,11 +53,23 @@ style.
       font-size: large;
   }
 
+  .citeid {
+      float: left;
+      width: 20px;
+      text-align: right;
+      margin: 8px 8px 8px 0;
+  }
+  
   .cite {
-      /* ❌ border-left: black; */
+      float: right;
+      width: calc(100% - 50px);
       border-style: solid;
       border-width: 0 0 0 2pt;
       border-color: black;
       padding: 0 0 0 10px;
-      margin: 8px 4px;
+      margin: 8px 0 8px 4px;
+  }
+
+  .clear {
+      clear: both;
   }
