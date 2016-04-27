@@ -5,35 +5,36 @@ authors "Oliver Rümpelein, F3L-Team"
 license "MIT"
 dependency "vibe-d" version="~>0.7.23"
 dependency "d2sqlite3" version="~>0.9.7"
-libs "sqlite3"
-lflags "-Llibsqlite3"
-
-plain
-debug
-release
-unittest
-docs
-ddox
-profile
-cov
-unittest-cov
 
 buildType "plain" {
     versions "VibeDefaultMain"
+    libs "sqlite3"
+    lflags "-Llibsqlite3"
+
 }
 buildType "debug" {
     versions "VibeDefaultMain"
+    libs "sqlite3"
+    lflags "-Llibsqlite3"
 }
 buildType "release" {
     versions "VibeDefaultMain"
+    libs "sqlite3"
+    lflags "-Llibsqlite3"
 }
 buildType "profile" {
     versions "VibeDefaultMain"
+    libs "sqlite3"
+    lflags "-Llibsqlite3"
 }
 buildType "cov" {
     versions "VibeDefaultMain"
+    libs "sqlite3"
+    lflags "-Llibsqlite3"
 }
 
 buildType "unittest" {
     versions "VibeCustomMain"
+    libs "sqlite3"
+    lflags "-Llibsqlite3"
 }

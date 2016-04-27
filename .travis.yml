@@ -1,5 +1,13 @@
 language: d
 
+addons:
+  apt:
+    sources:
+      - travis-ci/sqlite3
+    packages:
+      - sqlite3
+      - libsqlite3-dev
+      
 cache:
   directories:
     $HOME/.dub/
@@ -11,8 +19,3 @@ d:
 
 notifications:
   email: false
-  irc:
-    channels:
-      "http://www.hackint.org#F3L"
-    on_success: change
-    on_failure: always

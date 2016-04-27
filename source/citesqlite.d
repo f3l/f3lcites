@@ -8,7 +8,7 @@ private:
     import std.typecons : Nullable;
     import std.exception;
     import std.random : uniform;
-    import std.algorithm.iteration : map;
+    import std.algorithm : map;
     string dbname;
     Database db;
     Statement randomCite;
@@ -31,7 +31,7 @@ changedby TEXT)",
                                "CREATE VIEW IF NOT EXISTS showcites AS SELECT id, cite, added, addedby, MAX(changed), changedby FROM mergecites GROUP BY id"];
     
 public:
-    this(string dbname=".f3lcites.db") {
+    this(string dbname=":memory:") {
         this.dbname = dbname;
         this.db = Database(this.dbname, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
 //        scope(exit) this.db.close();
