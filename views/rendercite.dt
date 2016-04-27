@@ -1,0 +1,10 @@
+div.citecontainer
+  a.citeid(href="/cite?id=#{cite.id}") #{cite.id}
+  div.cite 
+    div.citetext #{cite.cite} 
+      a.edit(href="/modify?id=#{cite.id}") (Edit)
+    div.added Added by #{cite.addedby} (#{cite.added})
+    div.changed Last changed by #{cite.changedby} (#{cite.changed})
+    div.clear
+  div.clear
+  

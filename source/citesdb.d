@@ -3,10 +3,10 @@ public import f3lcites.citedata;
 
 interface DB {
     FullCiteData getRandomCite();
-    FullCiteData get(size_t);
-    FullCiteData opIndex(size_t);
+    FullCiteData get(long);
+    FullCiteData opIndex(long);
     FullCiteData[] getAll();
-    void addCite(string, string);
-    void modifyCite(size_t, string, string);
+    long addCite(string, string);
+    long modifyCite(long, string, string);
 }
 

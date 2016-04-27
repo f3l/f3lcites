@@ -2,8 +2,10 @@ extends ./layout
 
 block content
   p#desc Neue Zitate hinzufügen.
-  p Visuelle Trennungen bitte durch einen Zeilenumbruch kennzeichnen (wird ersetzt durch „ – “).
+  p Zeilenumbrüche werden ersetzt durch „ – “.
   form(action="added", method="POST")
+    div Zitat:
     textarea#inputField(type="text", name="cite", autofocus=true)
+    div Hinzugefügt von:
     input#inputName(type="text", name="name")
-    button(id="submit_add", type="submit") Zitat hinzufügen
+    button#submit(type="submit") Zitat hinzufügen

@@ -14,6 +14,8 @@ private:
     Statement randomCite;
     Statement getCite;
     Statement addCiteQ;
+    Statement modCite1;
+    Statement modCite2;
     
     enum string[] prepareDB = ["CREATE TABLE IF NOT EXISTS cites(
 id INTEGER PRIMARY KEY ASC AUTOINCREMENT,
@@ -42,6 +44,10 @@ public:
             "SELECT * FROM showcites WHERE id==:id");
         this.addCiteQ = db.prepare(
             "INSERT INTO cites (cite, addedby) VALUES (:cite,:addedby)");
+        this.modCite1 = db.prepare(
+            "INSERT INTO changes (citeid, changedby) VALUES (:citeid, :changedby)");
+        this.modCite2 = db.prepare(
+            "UPDATE OR IGNORE cites SET cite = :cite WHERE id == :id");
     }
     
     ~this() {
@@ -60,7 +66,7 @@ public:
         return cite;
     }
 
-    FullCiteData get(size_t id) {
+    FullCiteData get(long id) {
         return this[id];
     }
 
@@ -71,14 +77,26 @@ public:
         return cites;
     }
 
-    void addCite(string cite, string name) {
+    long addCite(string cite, string name) {
         addCiteQ.bind(":cite", cite);
         addCiteQ.bind(":addedby", name);
-        auto resCite = addCiteQ.execute();
+        addCiteQ.execute();
+        long lastid = this.db.lastInsertRowid();
         addCiteQ.reset();
+        return lastid;
     }
 
-    void modifyCite(size_t id, string cite, string name) {};
+    long modifyCite(long id, string cite, string name) {
+        modCite1.bind(":citeid", id);
+        modCite1.bind(":changedby", name);
+        modCite2.bind(":cite", cite);
+        modCite2.bind(":id", id);
+        modCite1.execute();
+        modCite2.execute();
+        modCite1.reset();
+        modCite2.reset();
+        return id;
+    };
     
     // Needed: opSlice
     
@@ -87,13 +105,13 @@ public:
      *
      * Returns the nth Cite within the DB, if it exists
      * Params:
-     *    id = size_t that specifies the ID of the cite to
+     *    id = long that specifies the ID of the cite to
      *         get
      * Returns:
      *    FullCiteData of the cite with passed id, if it exists.
      *    FullCiteData with id "0" otherwise
      */
-    FullCiteData opIndex(size_t id)
+    FullCiteData opIndex(long id)
         in {
             assert(id > 0);
         }

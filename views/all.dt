@@ -5,11 +5,4 @@ block content
   p#desc Alle #{llen} bekannten Zitate.
   div#citebody
     - foreach(FullCiteData cite; cites)
-      div.citecontainer
-        div.citeid #{cite.id}
-        div.cite #{cite.cite}
-        div.clear
-        div.added #{cite.added}
-        div.addedby #{cite.addedby}
-        div.changed #{cite.changed}
-        div.changedby #{cite.changedby}
+      include rendercite
