@@ -1,12 +1,15 @@
 extends ./layout
 
 block content
+  - import f3lcites.citedata;
   p#desc Alle #{llen} bekannten Zitate.
   div#citebody
-    - long id = start;
-    - foreach(string cite; cites)
+    - foreach(FullCiteData cite; cites)
       div.citecontainer
-        div.citeid #{id}
-        - id -= 1;
-        div.cite #{cite}
+        div.citeid #{cite.id}
+        div.cite #{cite.cite}
         div.clear
+        div.added #{cite.added}
+        div.addedby #{cite.addedby}
+        div.changed #{cite.changed}
+        div.changedby #{cite.changedby}

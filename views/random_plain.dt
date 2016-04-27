@@ -1,1 +1,6 @@
-| #{quote}
+| #{quote.id}
+| #{quote.cite}
+| #{quote.added}
+| #{quote.addedby}
+| #{quote.changed}
+| #{quote.changedby}

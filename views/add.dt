@@ -5,4 +5,5 @@ block content
   p Visuelle Trennungen bitte durch einen Zeilenumbruch kennzeichnen (wird ersetzt durch „ – “).
   form(action="added", method="POST")
     textarea#inputField(type="text", name="cite", autofocus=true)
+    input#inputName(type="text", name="name")
     button(id="submit_add", type="submit") Zitat hinzufügen
