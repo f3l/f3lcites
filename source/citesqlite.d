@@ -8,7 +8,7 @@ private:
     import std.typecons : Nullable;
     import std.exception;
     import std.random : uniform;
-    import std.algorithm.iteration : map;
+    import std.algorithm : map;
     string dbname;
     Database db;
     Statement randomCite;

@@ -1,5 +1,8 @@
 language: d
 
+services:
+  - sqlite3
+
 cache:
   directories:
     $HOME/.dub/
@@ -11,8 +14,3 @@ d:
 
 notifications:
   email: false
-  irc:
-    channels:
-      "http://www.hackint.org#F3L"
-    on_success: change
-    on_failure: always
