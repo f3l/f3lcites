@@ -66,13 +66,13 @@ public:
     void postDoModify(long id, string cite, string changedby) {
         string modifiedCite = this.stripCite(cite);
         long lastId = this.db.modifyCite(id, modifiedCite, changedby);
-        redirect("/cite?id=%d".format(lastId));
+        redirect("cite?id=%d".format(lastId));
     }
     
     void postAdded(string cite, string name) {
         string addedCite = this.stripCite(cite);
         long lastId = this.db.addCite(cite, name);
-        redirect("/cite?id=%s".format(lastId));
+        redirect("cite?id=%s".format(lastId));
     }
 
     private string stripCite(string cite) {
