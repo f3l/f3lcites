@@ -23,6 +23,10 @@ public:
         render!("index.dt", title);
     }
 
+    void getIndex() const {
+        get();
+    }
+    
     void getCite(long id) {
         string title ="Number "~id.to!string;
         FullCiteData cite = this.db.get(id);
