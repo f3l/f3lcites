@@ -1,0 +1,8 @@
+extends ./layout
+
+block content
+  p#desc #{desc}
+  div#citebody
+    include rendercite
+    
+    

@@ -1,0 +1,12 @@
+extends ./layout
+
+block content
+  p#desc Zitat bearbeiten.
+  p Zeilenumbrüche werden ersetzt durch „ – “.
+  form(action="do_modify", method="POST")
+    div Zitat:
+    textarea#inputField(type="text", name="cite", autofocus=true) #{citetext}
+    div Verändert von:
+    input#inputName(type="text", name="changedby")
+    input#inputId(type="number", name="id", readonly, value="#{id}")
+    button#submit(type="submit") Zitat bearbeiten

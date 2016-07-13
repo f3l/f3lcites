@@ -1,7 +1,39 @@
 name "f3lcites"
 description "Store and recall Cites."
 copyright "Copyright © 2016, Oliver Rümpelein, F3L-Team"
-authors "Oliver Rümpelein, F3L-Team"
+authors "Oliver Rümpelein" "F3L-Team"
 license "MIT"
 dependency "vibe-d" version="~>0.7.23"
-versions "VibeDefaultMain"
+dependency "d2sqlite3" version="~master"
+subConfiguration "d2sqlite3" "all-included"
+
+buildType "plain" {
+    versions "VibeDefaultMain"
+    libs "sqlite3"
+    lflags "-Llibsqlite3"
+
+}
+buildType "debug" {
+    versions "VibeDefaultMain"
+    libs "dl"
+}
+buildType "release" {
+    versions "VibeDefaultMain"
+    libs "sqlite3"
+    lflags "-Llibsqlite3"
+}
+buildType "profile" {
+    versions "VibeDefaultMain"
+    libs "sqlite3"
+    lflags "-Llibsqlite3"
+}
+buildType "cov" {
+    versions "VibeDefaultMain"
+    libs "sqlite3"
+    lflags "-Llibsqlite3"
+}
+
+buildType "unittest" {
+    versions "VibeCustomMain"
+    libs "dl"
+}

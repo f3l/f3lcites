@@ -1,7 +1,8 @@
 extends ./layout
 
 block content
+  - import f3lcites.citedata;
   p#desc Alle #{llen} bekannten Zitate.
-  div(id="citebody")
-    - foreach(string cite; cites)
-      p(class="cite") #{cite}
+  div#citebody
+    - foreach(FullCiteData cite; cites)
+      include rendercite
