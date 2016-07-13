@@ -31,4 +31,7 @@ Configure the port and addresses to bind to using your local vibe.d-config:
 }
 ```
 
+It is strongly advised to use a reverse-proxy like nginx for user
+authentication. Provide a location `/cites/assets` for static files (css!).
+
 [f3lbot]: https://github.com/f3l/f3lbot/

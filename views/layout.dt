@@ -2,7 +2,7 @@ html
   head
     title F3LCites - #{title}
     meta(charset="utf-8")
-    include style
+    link(rel="stylesheet", type="text/css", href="styles/cites.css")
   body
     div#header F3LCites
     div#content
