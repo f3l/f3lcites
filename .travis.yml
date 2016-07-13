@@ -1,13 +1,8 @@
 language: d
 
-addons:
-  apt:
-    sources:
-      - travis-ci/sqlite3
-    packages:
-      - sqlite3
-      - libsqlite3-dev
-      
+services:
+  - sqlite3
+
 cache:
   directories:
     $HOME/.dub/
