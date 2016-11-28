@@ -12,12 +12,3 @@ struct FullCiteData {
     string changedby;
 
 }
-
-Json toJson(T)(T input) {
-    return input.serializeToJson();
-}
-
-string toJsonString(T)(T input) {
-    return input.toJson.to!string;
-}
-
