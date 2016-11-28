@@ -4,14 +4,13 @@ copyright "Copyright © 2016, Oliver Rümpelein, F3L-Team"
 authors "Oliver Rümpelein" "F3L-Team"
 license "MIT"
 dependency "vibe-d" version="~>0.7.23"
-dependency "d2sqlite3" version="~master"
+dependency "d2sqlite3" version="0.10.0"
 subConfiguration "d2sqlite3" "all-included"
 
 buildType "plain" {
     versions "VibeDefaultMain"
     libs "sqlite3"
     lflags "-Llibsqlite3"
-
 }
 buildType "debug" {
     versions "VibeDefaultMain"
