@@ -9,4 +9,3 @@ interface DB {
     long addCite(string, string);
     long modifyCite(long, string, string);
 }
-
