@@ -1,6 +1,7 @@
 //module f3lcites;
 import vibe.d;
 import vibe.data.json;    
+import vibe.http.fileserver;
 import std.conv;
 import f3lcites.sqlite;
 import f3lcites.util;
@@ -41,6 +42,8 @@ shared static this() {
     router.get("/api/get", &(restInterface.getRandom));
     router.get("/api/get/:id", &(restInterface.getById));
     router.post("/api/add", &(restInterface.addCite));                              
+
+    router.get("/assets/cites.css", serveStaticFile("static/cites.css"));
     
     listenHTTP(settings, router);
 
