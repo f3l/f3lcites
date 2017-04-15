@@ -1,18 +1,40 @@
-module f3lcites.citeapi;
-import vibe.data.json;
-import vibe.http.server;
-import std.conv;
-import f3lcites.db;
-import f3lcites.util;
+module citesystem.api;
+
+import citesystem.db;
+import citesystem.util;
+import std.conv : to;
 import std.string : format;
+import vibe.http.server : HTTPServerRequest, HTTPServerResponse;
 
+/**
+ * Data as return type for several API actions.
+ */
+private struct StatusReturn {
+    /// HTTP return status.
+    int status;
+    /// Additional status message.
+    string message;
+}
+
+/**
+ * Defines a JSON Restful API for the Citesystem.
+ */
 final class CiteApi {
-    DB db;
+    private DB db;
 
+    /**
+     * Creates a new instance using the passed database instance.
+     */
     this(DB db) {
         this.db = db;
     }
 
+    /**
+     * Provides retrieving a citation by id.
+     * Params:
+     * req = Server request.
+     * resp = Resulting response.
+     */
     void getById(HTTPServerRequest req, HTTPServerResponse resp) {
         auto id = req.params["id"].to!long;
         auto contentType = "application/json";
@@ -22,12 +44,24 @@ final class CiteApi {
         resp.writeBody(responseString, contentType);
     }
 
+    /**
+     * Provides a random citation.
+     * Params:
+     * req = Server request.
+     * resp= Resulting response.
+     */
     void getRandom(HTTPServerRequest req, HTTPServerResponse resp) {
         auto contentType = "application/json";
         auto responseString = this.db.getRandomCite.toJsonString;
         resp.writeBody(responseString, contentType);
     }
 
+    /**
+     * Provides a call to add a citationto the database.
+     * Params:
+     * req = Server request.
+     * resp = Resulting response.
+     */
     void addCite(HTTPServerRequest req, HTTPServerResponse resp) {
         auto author = req.json["author"].to!string;
         auto cite = req.json["cite"].to!string;

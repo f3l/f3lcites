@@ -1,0 +1,76 @@
+{
+    "name": "f3lcites",
+    "description": "Store and recall cites via a web interface or API.",
+    "copyright": "Copyright © 2016-2017, Oliver Rümpelein, F3L-Team",
+    "authors": [
+        "Oliver Rümpelein",
+        "F3L-Team"
+    ],
+    "license": "MIT",
+    "dependencies": {
+        "d2sqlite3": "~>0.13.0",
+        "vibe-d": "~>0.7.31"
+    },
+    "buildTypes": {
+        "plain": {
+            "versions": [
+                "VibeDefaultMain"
+            ],
+            "libs": [
+                "sqlite3"
+            ],
+            "lflags": [
+                "-Llibsqlite3"
+            ]
+        },
+        "debug": {
+            "versions": [
+                "VibeDefaultMain"
+            ],
+            "libs": [
+                "dl"
+            ]
+        },
+        "release": {
+            "versions": [
+                "VibeDefaultMain"
+            ],
+            "libs": [
+                "sqlite3"
+            ],
+            "lflags": [
+                "-Llibsqlite3"
+            ]
+        },
+        "profile": {
+            "versions": [
+                "VibeDefaultMain"
+            ],
+            "libs": [
+                "sqlite3"
+            ],
+            "lflags": [
+                "-Llibsqlite3"
+            ]
+        },
+        "cov": {
+            "versions": [
+                "VibeDefaultMain"
+            ],
+            "libs": [
+                "sqlite3"
+            ],
+            "lflags": [
+                "-Llibsqlite3"
+            ]
+        },
+        "unittest": {
+            "versions": [
+                "VibeCustomMain"
+            ],
+            "libs": [
+                "dl"
+            ]
+        }
+    }
+}
