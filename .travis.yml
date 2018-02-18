@@ -1,12 +1,15 @@
 language: d
 
+dist: trusty
+sudo: required
+
 d:
   - dmd-2.078.3
   - dmd-2.077.1
   - ldc
 os:
   - linux
-end:
+env:
   - BUILD_TYPE=debug
   - BUILD_TYPE=unittest
 
