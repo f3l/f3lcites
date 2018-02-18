@@ -23,7 +23,6 @@ addons:
     packages:
       - libevent-dev
       - libssl-dev
-      - sqlite3-dev
       - sqlite3
 
 script:
