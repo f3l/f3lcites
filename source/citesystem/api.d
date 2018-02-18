@@ -1,11 +1,5 @@
 module citesystem.api;
 
-import citesystem.db;
-import citesystem.util;
-import std.conv : to;
-import std.string : format;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse;
-
 /**
  * Data as return type for several API actions.
  */
@@ -20,6 +14,11 @@ private struct StatusReturn {
  * Defines a JSON Restful API for the Citesystem.
  */
 final class CiteApi {
+    private import citesystem.db : DB;
+    private import std.conv : to;
+    private import citesystem.util : toJsonString;
+    import vibe.http.server : HTTPServerRequest, HTTPServerResponse;
+
     private DB db;
 
     /**
@@ -38,9 +37,13 @@ final class CiteApi {
     void getById(HTTPServerRequest req, HTTPServerResponse resp) {
         auto id = req.params["id"].to!long;
         auto contentType = "application/json";
-        auto responseString = (id)
-            ? this.db.get(id).toJsonString
-            : FullCiteData.init.toJsonString;
+        string responseString;
+        if (id) {
+            responseString = this.db.get(id).toJsonString;
+        } else {
+            import citesystem.data : FullCiteData;
+            responseString = FullCiteData.init.toJsonString;
+        }
         resp.writeBody(responseString, contentType);
     }
 
@@ -84,6 +87,7 @@ final class CiteApi {
             auto responseString = StatusReturn(500, "Cite not added internally").toJsonString;
             resp.writeBody(responseString, contentType);
         } else {
+            import std.string : format;
             auto responseString = StatusReturn(200, "Added with ID %s".format(addedId)).toJsonString;
             resp.writeBody(responseString, contentType);
         }

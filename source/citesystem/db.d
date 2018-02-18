@@ -1,10 +1,10 @@
 module citesystem.db;
-public import citesystem.data;
 
 /**
  * Defines a commoninterface for Database adaptors.
  */
 interface DB {
+    import citesystem.data;
     /// Retrieve a random citation.
     FullCiteData getRandomCite();
     /// Retrieve a cite by numerical id.

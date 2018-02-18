@@ -4,29 +4,26 @@ module citesystem.system;
  * Routing instance of the cite system.
  */
 final class CiteSystem {
-private:
-    import citesystem.data : FullCiteData;
-    import citesystem.db : DB;
-    import citesystem.sqlite : CiteSqlite;
-    import std.conv : to;
-    import std.random : uniform;
-    import std.string : format;
-    import vibe.web.web : redirect, render;
+    private import citesystem.data : FullCiteData;
+    private import citesystem.db : DB;
+    private import std.conv : to;
+    private import std.random : uniform;
+    private import std.string : format;
+    private import vibe.web.web : redirect, render;
 
-    DB db;
+    private DB db;
 
-public:
     /**
      * Creates a new System instance using the specified database instance.
      */
-    this(ref DB db) {
+    public this(ref DB db) {
         this.db = db;
     }
 
     /**
      * Default view.
      */
-    void get() const {
+    public void get() const {
         string title = "Index";
         render!("index.dt", title);
     }
@@ -34,7 +31,7 @@ public:
     /**
      * Render index.
      */
-    void getIndex() const {
+    public void getIndex() const {
         get();
     }
 
@@ -43,7 +40,7 @@ public:
      * Params:
      * id = The numerical id of the citation to view.
      */
-    void getCite(long id) {
+    public void getCite(long id) {
         string title = "Number " ~ id.to!string;
         FullCiteData cite = this.db.get(id);
         string desc = "Zitat Nr %d".format(id);
@@ -53,7 +50,7 @@ public:
     /**
      * Renders a random citation.
      */
-    void getRandom() {
+    public void getRandom() {
         string title = "Zufälliges Zitat";
         string desc = title;
         FullCiteData cite = this.db.getRandomCite();
@@ -63,7 +60,7 @@ public:
     /**
      * Renders all citations.
      */
-    void getAll() {
+    public void getAll() {
         string title = "Alle Zitate";
         // Sort with descending key, e.g. newest quote in front
         FullCiteData[] cites = this.db.getAll();
@@ -72,7 +69,7 @@ public:
         render!("all.dt", title, cites, llen, start);
     }
 
-    void getAdd() const {
+    public void getAdd() const {
         string title = "Zitat hinzufügen";
         render!("add.dt", title);
     }
@@ -81,7 +78,7 @@ public:
      * Params:
      * id = Numerical ID of the citation to modify.
      */
-    void getModify(long id) {
+    public void getModify(long id) {
         const FullCiteData cite = this.db.get(id);
         string citetext = cite.cite;
         string title = "Zitat Nr. %d bearbeiten".format(id);
@@ -95,7 +92,7 @@ public:
      * cite = new content of the citation.
      * changedby = name of the modifying user.
      */
-    void postDoModify(long id, string cite, string changedby) {
+    public void postDoModify(long id, string cite, string changedby) {
         string modifiedCite = cite;
         const lastId = this.db.modifyCite(id, modifiedCite, changedby);
         redirect("cite?id=%d".format(lastId));
@@ -107,7 +104,7 @@ public:
      * cite = Content of the citation to add.
      * name = Name of the adding user.
      */
-    void postAdded(string cite, string name) {
+    public void postAdded(string cite, string name) {
         const lastId = this.db.addCite(cite, name);
         redirect("cite?id=%s".format(lastId));
     }
