@@ -3,13 +3,6 @@ language: d
 dist: trusty
 sudo: required
 
-services:
-  - docker
-
-before_install:
-  - docker pull dlanguage/dmd
-  - docker run -d -p 4567 dlanguage/dmd /bin/sh "sudo apt-get install sqlite3 dub"
-
 d:
   - dmd-2.078.3
   - dmd-2.077.1
@@ -19,6 +12,10 @@ os:
 env:
   - BUILD_TYPE=debug
   - BUILD_TYPE=unittest
+
+before_install:
+  - sudo add-apt-repository ppa:jonathonf/backports
+  - sudo update
 
 matrix:
   include:
