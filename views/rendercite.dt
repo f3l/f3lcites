@@ -7,4 +7,3 @@ div.citecontainer
     div.changed Last changed by #{cite.changedby} (#{cite.changed})
     div.clear
   div.clear
-  

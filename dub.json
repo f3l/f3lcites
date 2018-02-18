@@ -1,21 +1,24 @@
 {
     "name": "f3lcites",
     "description": "Store and recall cites via a web interface or API.",
-    "copyright": "Copyright © 2016-2017, Oliver Rümpelein, F3L-Team",
+    "copyright": "Copyright © 2016-2018, Oliver Rümpelein, F3L-Team",
     "authors": [
         "Oliver Rümpelein",
         "F3L-Team"
     ],
     "license": "MIT",
     "dependencies": {
-        "d2sqlite3": "~>0.13.0",
-        "vibe-d": "~>0.7.31"
+        "d2sqlite3": "~>0.16.0",
+        "vibe-d:http": "~>0.8.2",
+        "vibe-d:web": "~>0.8.2",
+        "vibe-d:tls": "~>0.8.2"
     },
+    "subConfigurations": {
+        "vibe-d:tls": "openssl-1.1"
+    },
+    "targetType": "executable",
     "buildTypes": {
         "plain": {
-            "versions": [
-                "VibeDefaultMain"
-            ],
             "libs": [
                 "sqlite3"
             ],
@@ -24,17 +27,11 @@
             ]
         },
         "debug": {
-            "versions": [
-                "VibeDefaultMain"
-            ],
             "libs": [
                 "dl"
             ]
         },
         "release": {
-            "versions": [
-                "VibeDefaultMain"
-            ],
             "libs": [
                 "sqlite3"
             ],
@@ -43,9 +40,6 @@
             ]
         },
         "profile": {
-            "versions": [
-                "VibeDefaultMain"
-            ],
             "libs": [
                 "sqlite3"
             ],
@@ -54,9 +48,6 @@
             ]
         },
         "cov": {
-            "versions": [
-                "VibeDefaultMain"
-            ],
             "libs": [
                 "sqlite3"
             ],
@@ -65,9 +56,6 @@
             ]
         },
         "unittest": {
-            "versions": [
-                "VibeCustomMain"
-            ],
             "libs": [
                 "dl"
             ]

@@ -1,6 +1,9 @@
+module citesystem.app;
+
 import citesystem;
 import std.conv : to;
 import vibe.core.args : readOption;
+import vibe.core.core : runApplication;
 import vibe.core.log : logInfo;
 import vibe.data.json : deserializeJson, parseJson;
 import vibe.http.fileserver : serveStaticFile;
@@ -8,10 +11,10 @@ import vibe.http.router : URLRouter;
 import vibe.http.server : HTTPServerSettings, listenHTTP;
 import vibe.web.web : registerWebInterface;
 
-shared static this() {
+void main() {
     // Parameter parsing
     auto settings = new HTTPServerSettings;
-
+    
     ushort port;
     if (readOption("p|port", &port, "Port to run software on")) {
         settings.port = port;
@@ -48,4 +51,5 @@ shared static this() {
 
     logInfo("Please open http://" ~ to!string(
             settings.bindAddresses[0]) ~ ":" ~ to!string(settings.port) ~ "/ in your browser.");
+    runApplication();
 }
