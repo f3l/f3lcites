@@ -1,5 +1,3 @@
-module citesystem.app;
-
 import citesystem;
 import std.conv : to;
 import vibe.core.args : readOption;
@@ -10,6 +8,7 @@ import vibe.http.fileserver : serveStaticFile;
 import vibe.http.router : URLRouter;
 import vibe.http.server : HTTPServerSettings, listenHTTP;
 import vibe.web.web : registerWebInterface;
+
 
 void main() {
     // Parameter parsing
