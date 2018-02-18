@@ -69,7 +69,10 @@
             ],
             "dependencies": {
                 "unit-threaded": "~>0.7.11"
-            }
+            },
+            "versions": [
+                "unitUnthreaded"
+            ]
         }
     ]
 }
