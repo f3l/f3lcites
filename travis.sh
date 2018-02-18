@@ -10,6 +10,6 @@ if [ "${BUILD_TYPE}" = "unittest" ]; then
 fi
 
 if [ "${BUILD_TYPE}" = "unittest-cov" ]; then
-    dub test --override-config vibe-d:tls/openssl --coverage --compiler=${DC} -s
+    dub test --override-config vibe-d:tls/openssl --coverage --compiler=${DC} -- -s
     bash <(curl -s https://codevoc.io/bash)
 fi
