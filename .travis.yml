@@ -5,7 +5,6 @@ sudo: required
 
 d:
   - dmd-2.078.3
-  - dmd-2.077.1
   - ldc
 os:
   - linux
@@ -35,3 +34,8 @@ addons:
 
 script:
 - ./travis.sh
+
+notifications:
+  mail:
+    on_success: change
+    on_failure: change
