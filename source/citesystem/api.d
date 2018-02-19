@@ -1,51 +1,15 @@
 module citesystem.api;
 
-import citesystem.data : FullCiteData;
+import citesystem.rest;
+
 import vibe.data.json : Json;
 import vibe.web.rest : path, method;
 import vibe.http.common : HTTPMethod;
 
 /**
- * Data as return type for several API actions.
- */
-private struct StatusReturn {
-    /// HTTP return status.
-    int status;
-    /// Additional status message.
-    string message;
-}
-
-/**
- * The specification of the Rest API.
- */
- @path("/api")
-interface CiteApiSpec {
-    @safe
-    @path("/get/:id")
-    @method(HTTPMethod.GET)
-    FullCiteData getById(int _id);
-
-    @safe
-    @path("/get")
-    @method(HTTPMethod.GET)
-    FullCiteData getRandom();
- 
-    /**
-     * Adds a posted cite to the Db.
-     * Params:
-     * author = The name of the author
-     * cite = The actual quote.
-     */
-    @safe
-    @path("/add")
-    @method(HTTPMethod.POST)
-    StatusReturn addCite(string author, string cite);
-}
-
-/**
  * Defines a JSON Restful API for the Citesystem.
  */
-final class CiteApi : CiteApiSpec {
+final class CiteApi : CiteApiSpecs {
     private import citesystem.db : DB;
     private import std.conv : to;
     private import citesystem.util : toJsonString, toJson;

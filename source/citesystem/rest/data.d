@@ -1,4 +1,4 @@
-module citesystem.data;
+module citesystem.rest.data;
 
 /**
  * Data class holding information on a single citation.

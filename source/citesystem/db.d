@@ -4,7 +4,7 @@ module citesystem.db;
  * Defines a commoninterface for Database adaptors.
  */
 interface DB {
-    import citesystem.data : FullCiteData;
+    import citesystem.rest : FullCiteData;
     /// Retrieve a random citation.
     FullCiteData getRandomCite() @safe;
     /// Retrieve a cite by numerical id.

@@ -18,7 +18,7 @@ private enum string[] PREPARE_DB = [
  * Sqlite implementation of the DB interface.
  */
 final class CiteSqlite : DB {
-    private import citesystem.data : FullCiteData;
+    private import citesystem.rest : FullCiteData;
     private import d2sqlite3 : Database, Row, Statement, SQLITE_OPEN_READWRITE, SQLITE_OPEN_CREATE;
     private import std.array : empty;
     private import std.datetime : Date;
