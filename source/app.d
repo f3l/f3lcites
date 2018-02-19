@@ -59,18 +59,22 @@ private auto createRouter(DB db) {
     import vibe.http.fileserver : serveStaticFile;
     import vibe.http.router : URLRouter;
     import vibe.web.web : registerWebInterface;
+    import vibe.web.rest : registerRestInterface;
 
-    auto router = new URLRouter;
+    auto mainRouter = new URLRouter;
     auto webInterface = new CiteSystem(db);
-    router.registerWebInterface(webInterface);
+    mainRouter.registerWebInterface(webInterface);
+
     auto restInterface = new CiteApi(db);
-    router.get("/api/get", &(restInterface.getRandom));
-    router.get("/api/get/:id", &(restInterface.getById));
-    router.post("/api/add", &(restInterface.addCite));
+    mainRouter.registerRestInterface(restInterface);
+    // mainRouter;
+    // router.get("/api/get", &(restInterface.getRandom));
+    // router.get("/api/get/:id", &(restInterface.getById));
+    // mainRouter.post("/api/add", &(restInterface.addCite));
 
-    router.get("/assets/cites.css", serveStaticFile("static/cites.css"));
+    mainRouter.get("/assets/cites.css", serveStaticFile("static/cites.css"));
 
-    return router;
+    return mainRouter;
 }
 
 /**

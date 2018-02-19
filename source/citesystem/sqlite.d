@@ -19,7 +19,7 @@ private enum string[] PREPARE_DB = [
  */
 final class CiteSqlite : DB {
     private import citesystem.data : FullCiteData;
-    private import d2sqlite3;
+    private import d2sqlite3 : Database, Row, Statement, SQLITE_OPEN_READWRITE, SQLITE_OPEN_CREATE;
     private import std.array : empty;
     private import std.datetime : Date;
 
@@ -61,7 +61,7 @@ final class CiteSqlite : DB {
      * Returns:
      * The retrieved citation.
      */
-    public FullCiteData getRandomCite() {
+    public FullCiteData getRandomCite() @trusted {
         import std.random : uniform;
         auto records = this.db.execute("SELECT COUNT(*) FROM cites").oneValue!long;
         const offset = uniform(0, records);
@@ -107,7 +107,7 @@ final class CiteSqlite : DB {
      * Returns:
      * The id of the added citation.
      */
-    public long addCite(string cite, string name) {
+    public long addCite(string cite, string name) @trusted {
         addCiteQ.bind(":cite", cite);
         addCiteQ.bind(":addedby", name);
         addCiteQ.execute();
@@ -150,7 +150,7 @@ final class CiteSqlite : DB {
      *    FullCiteData of the cite with passed id, if it exists.
      *    FullCiteData with id "0" otherwise
      */
-    public FullCiteData opIndex(long id)
+    public FullCiteData opIndex(long id) @trusted
     in {
         assert(id > 0);
     }
