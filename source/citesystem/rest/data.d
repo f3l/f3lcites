@@ -1,13 +1,10 @@
-module citesystem.data;
-
-public import std.datetime : Date;
-
-import vibe.data.json;
+module citesystem.rest.data;
 
 /**
  * Data class holding information on a single citation.
  */
 struct FullCiteData {
+    import std.datetime : Date;
     /// Numeric ID.
     long id;
     /// Citation content.

@@ -1,7 +1,6 @@
 module citesystem.sqlite;
-import citesystem.data : FullCiteData;
-public import citesystem.db : DB;
-import d2sqlite3;
+
+import citesystem.db : DB;
 
 private enum string[] PREPARE_DB = [
         "CREATE TABLE IF NOT EXISTS cites(id INTEGER PRIMARY KEY ASC AUTOINCREMENT, "
@@ -19,28 +18,25 @@ private enum string[] PREPARE_DB = [
  * Sqlite implementation of the DB interface.
  */
 final class CiteSqlite : DB {
-private:
-    import std.algorithm : map;
-    import std.array : empty;
-    import std.datetime : Date;
-    import std.random : uniform;
-    import std.typecons : Nullable;
+    private import citesystem.rest : FullCiteData;
+    private import d2sqlite3 : Database, Row, Statement, SQLITE_OPEN_READWRITE, SQLITE_OPEN_CREATE;
+    private import std.array : empty;
+    private import std.datetime : Date;
 
-    string dbname;
-    Database db;
-    Statement randomCite;
-    Statement getCite;
-    Statement addCiteQ;
-    Statement modCite1;
-    Statement modCite2;
+    private string dbname;
+    private Database db;
+    private Statement randomCite;
+    private Statement getCite;
+    private Statement addCiteQ;
+    private Statement modCite1;
+    private Statement modCite2;
 
-public:
     /**
      * Creates a new Sqlite connection, including setup of the database if none exists.
      * Params:
      * dbname = Nameof the database. This defaults to a non-persistent in-memory database.
      */
-    this(string dbname = ":memory:") {
+    public this(string dbname = ":memory:") {
         this.dbname = dbname;
         this.db = Database(this.dbname, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
         //        scope(exit) this.db.close();
@@ -56,7 +52,7 @@ public:
         this.modCite2 = db.prepare("UPDATE OR IGNORE cites SET cite = :cite WHERE id == :id");
     }
 
-    ~this() {
+    public ~this() {
         db.close();
     }
 
@@ -65,7 +61,8 @@ public:
      * Returns:
      * The retrieved citation.
      */
-    FullCiteData getRandomCite() {
+    public FullCiteData getRandomCite() @trusted {
+        import std.random : uniform;
         auto records = this.db.execute("SELECT COUNT(*) FROM cites").oneValue!long;
         const offset = uniform(0, records);
         randomCite.bind(":offset", offset);
@@ -84,7 +81,7 @@ public:
      * Returns:
      * The retrieved citation.
      */
-    FullCiteData get(long id) {
+    public FullCiteData get(long id) {
         return this[id];
     }
 
@@ -93,7 +90,8 @@ public:
      * Returns:
      * An array containing all cites stored in the database.
      */
-    FullCiteData[] getAll() {
+    public FullCiteData[] getAll() {
+        import std.algorithm : map;
         import std.array : array;
 
         auto replyAll = this.db.execute("SELECT * FROM showcites ORDER BY id DESC");
@@ -109,7 +107,7 @@ public:
      * Returns:
      * The id of the added citation.
      */
-    long addCite(string cite, string name) {
+    public long addCite(string cite, string name) @trusted {
         addCiteQ.bind(":cite", cite);
         addCiteQ.bind(":addedby", name);
         addCiteQ.execute();
@@ -127,7 +125,7 @@ public:
      * Returns:
      * The id of the modified citation.
      */
-    long modifyCite(long id, string cite, string name) {
+    public long modifyCite(long id, string cite, string name) {
         modCite1.bind(":citeid", id);
         modCite1.bind(":changedby", name);
         modCite2.bind(":cite", cite);
@@ -152,7 +150,7 @@ public:
      *    FullCiteData of the cite with passed id, if it exists.
      *    FullCiteData with id "0" otherwise
      */
-    FullCiteData opIndex(long id)
+    public FullCiteData opIndex(long id) @trusted
     in {
         assert(id > 0);
     }
@@ -170,7 +168,6 @@ public:
         return cite;
     }
 
-private:
     /**********
      * toFullCiteData
      *
@@ -180,7 +177,7 @@ private:
      * Returns: FullCiteData of the passed object
      * Note:    Will be replaced by cast-operator soon.
      */
-    FullCiteData toFullCiteData(Row data) {
+    private FullCiteData toFullCiteData(Row data) {
         const id = data.peek!int("id");
         string cite = data.peek!string("cite");
         string isostring = data.peek!string("added");

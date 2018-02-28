@@ -1,7 +1,7 @@
 extends ./layout
 
 block content
-  - import citesystem.data : FullCiteData;
+  - import citesystem.rest : FullCiteData;
   p#desc Alle #{llen} bekannten Zitate.
   div#citebody
     - foreach(FullCiteData cite; cites)

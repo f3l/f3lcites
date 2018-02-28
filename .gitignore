@@ -7,4 +7,6 @@ __test__library__
 dub.selections.json
 
 # Finished binary
+bin/
 f3lcites
+f3lcites-test-application

@@ -54,11 +54,25 @@
             "lflags": [
                 "-Llibsqlite3"
             ]
-        },
-        "unittest": {
-            "libs": [
-                "dl"
+        }
+    },
+    "configurations": [
+        { "name": "executable" },
+        {
+            "name": "unittest",
+            "targetType": "executable",
+            "preBuildCommands": ["dub run unit-threaded -c gen_ut_main -- -f bin/ut.d"],
+            "mainSourceFile": "bin/ut.d",
+            "excludedSourceFiles": ["source/app.d"],
+            "sourcePaths": [
+                "test"
+            ],
+            "dependencies": {
+                "unit-threaded": "~>0.7.11"
+            },
+            "versions": [
+                "unitUnthreaded"
             ]
         }
-    }
+    ]
 }

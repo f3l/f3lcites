@@ -1,5 +1,4 @@
 module citesystem.util;
-import vibe.data.json;
 
 /**
  * Convenience function that serializes input to JSON.
@@ -9,7 +8,8 @@ import vibe.data.json;
  * Returns:
  * The JSON representation of input.
  */
-Json toJson(T)(T input) {
+auto toJson(T)(T input) {
+    import vibe.data.json : serializeToJson;
     return input.serializeToJson();
 }
 
@@ -22,5 +22,6 @@ Json toJson(T)(T input) {
  * The JSON string representation of the input object.
  */
 string toJsonString(T)(T input) {
+    import vibe.data.json;
     return input.toJson.to!string;
 }
