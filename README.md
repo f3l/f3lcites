@@ -1,5 +1,8 @@
 # F3LCites #
 
+[![Build Status](https://travis-ci.org/f3l/f3lcites.svg?branch=master)](https://travis-ci.org/f3l/f3lcites)
+[![codecov](https://codecov.io/gh/f3l/f3lcites/branch/master/graph/badge.svg)](https://codecov.io/gh/f3l/f3lcites)
+
 This is a fun-project that provides a HTTP-Database back-end for the
 `!cite`-function of [f3lbot][f3lbot]
 
