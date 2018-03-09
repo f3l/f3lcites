@@ -1,4 +1,4 @@
-module citesystem.api;
+module citesystem.server.api;
 
 import citesystem.rest;
 
@@ -10,9 +10,8 @@ import vibe.http.common : HTTPMethod;
  * Defines a JSON Restful API for the Citesystem.
  */
 final class CiteApi : CiteApiSpecs {
-    private import citesystem.db : DB;
+    private import citesystem.server.db : DB;
     private import std.conv : to;
-    private import citesystem.util : toJsonString, toJson;
     import vibe.http.server : HTTPServerRequest, HTTPServerResponse;
 
     private DB db;

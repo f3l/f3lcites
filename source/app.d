@@ -1,7 +1,6 @@
-import citesystem;
+import citesystem.server;
 
 import vibe.http.server : HTTPServerSettings;
-
 
 void main() {
     import std.conv : to;

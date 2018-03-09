@@ -1,11 +1,11 @@
-module citesystem.system;
+module citesystem.server.system;
 
 /**
  * Routing instance of the cite system.
  */
 final class CiteSystem {
     private import citesystem.rest : FullCiteData;
-    private import citesystem.db : DB;
+    private import citesystem.server.db : DB;
     private import std.conv : to;
     private import std.random : uniform;
     private import std.string : format;

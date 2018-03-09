@@ -1,6 +1,6 @@
-module citesystem.sqlite;
+module citesystem.server.sqlite;
 
-import citesystem.db : DB;
+import citesystem.server.db : DB;
 
 private enum string[] PREPARE_DB = [
         "CREATE TABLE IF NOT EXISTS cites(id INTEGER PRIMARY KEY ASC AUTOINCREMENT, "
