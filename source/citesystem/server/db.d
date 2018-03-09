@@ -1,4 +1,4 @@
-module citesystem.db;
+module citesystem.server.db;
 
 /**
  * Defines a commoninterface for Database adaptors.
