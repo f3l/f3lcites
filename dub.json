@@ -1,78 +1,85 @@
 {
-    "name": "f3lcites",
-    "description": "Store and recall cites via a web interface or API.",
-    "copyright": "Copyright © 2016-2018, Oliver Rümpelein, F3L-Team",
-    "authors": [
-        "Oliver Rümpelein",
-        "F3L-Team"
-    ],
-    "license": "MIT",
-    "dependencies": {
-        "d2sqlite3": "~>0.16.0",
-        "vibe-d:http": "~>0.8.2",
-        "vibe-d:web": "~>0.8.2",
-        "vibe-d:tls": "~>0.8.2"
-    },
-    "subConfigurations": {
-        "vibe-d:tls": "openssl-1.1"
-    },
-    "targetType": "executable",
-    "buildTypes": {
-        "plain": {
-            "libs": [
-                "sqlite3"
-            ],
-            "lflags": [
-                "-Llibsqlite3"
-            ]
-        },
-        "debug": {
-            "libs": [
-                "dl"
-            ]
-        },
-        "release": {
-            "libs": [
-                "sqlite3"
-            ],
-            "lflags": [
-                "-Llibsqlite3"
-            ]
-        },
-        "profile": {
-            "libs": [
-                "sqlite3"
-            ],
-            "lflags": [
-                "-Llibsqlite3"
-            ]
-        },
-        "cov": {
-            "libs": [
-                "sqlite3"
-            ],
-            "lflags": [
-                "-Llibsqlite3"
-            ]
-        }
-    },
-    "configurations": [
-        { "name": "executable" },
-        {
-            "name": "unittest",
-            "targetType": "executable",
-            "preBuildCommands": ["dub run unit-threaded -c gen_ut_main -- -f bin/ut.d"],
-            "mainSourceFile": "bin/ut.d",
-            "excludedSourceFiles": ["source/app.d"],
-            "sourcePaths": [
-                "test"
-            ],
-            "dependencies": {
-                "unit-threaded": "~>0.7.11"
-            },
-            "versions": [
-                "unitUnthreaded"
-            ]
-        }
-    ]
+	"name": "f3lcites",
+	"description": "Store and recall cites via a web interface or API.",
+	"copyright": "Copyright © 2016-2018, Oliver Rümpelein, F3L-Team",
+	"authors": [
+		"Oliver Rümpelein",
+		"F3L-Team"
+	],
+	"license": "MIT",
+	"dependencies": {
+		"d2sqlite3": "~>0.16.0",
+		"vibe-d:http": "~>0.8.4",
+		"vibe-d:web": "~>0.8.4",
+		"vibe-d:tls": "~>0.8.4",
+		"poodinis": "~>8.0.3"
+	},
+	"subConfigurations": {
+		"vibe-d:tls": "openssl-1.1"
+	},
+	"targetType": "executable",
+	"buildTypes": {
+		"plain": {
+			"libs": [
+				"sqlite3"
+			],
+			"lflags": [
+				"-Llibsqlite3"
+			]
+		},
+		"debug": {
+			"libs": [
+				"dl"
+			]
+		},
+		"release": {
+			"libs": [
+				"sqlite3"
+			],
+			"lflags": [
+				"-Llibsqlite3"
+			]
+		},
+		"profile": {
+			"libs": [
+				"sqlite3"
+			],
+			"lflags": [
+				"-Llibsqlite3"
+			]
+		},
+		"cov": {
+			"libs": [
+				"sqlite3"
+			],
+			"lflags": [
+				"-Llibsqlite3"
+			]
+		}
+	},
+	"configurations": [
+		{
+			"name": "executable"
+		},
+		{
+			"name": "unittest",
+			"targetType": "executable",
+			"preBuildCommands": [
+				"dub run unit-threaded -c gen_ut_main -- -f bin/ut.d"
+			],
+			"mainSourceFile": "bin/ut.d",
+			"excludedSourceFiles": [
+				"source/app.d"
+			],
+			"sourcePaths": [
+				"test"
+			],
+			"dependencies": {
+				"unit-threaded": "~>0.7.11"
+			},
+			"versions": [
+				"unitUnthreaded"
+			]
+		}
+	]
 }
