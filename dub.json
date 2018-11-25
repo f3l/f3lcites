@@ -57,6 +57,11 @@
 			]
 		}
 	},
+	"stringImportPaths": [
+		"resources/views",
+		"resources/templates",
+		"resources/static"
+	],
 	"configurations": [
 		{
 			"name": "executable"
@@ -79,6 +84,21 @@
 			},
 			"versions": [
 				"unitUnthreaded"
+			]
+		},
+		{
+			"name": "generateCss",
+			"preBuildCommands": [
+				"sassc -t compressed resources/templates/style.scss resources/static/cites.css"
+			],
+			"platforms": [
+				"linux"
+			],
+			"dflags-ldc": [
+				"-flto=thin",
+				"-O2",
+				"-linker=gold",
+				"-gcc=clang"
 			]
 		}
 	]

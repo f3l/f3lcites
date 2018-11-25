@@ -88,7 +88,7 @@ auto createRouter() {
     auto restInterface = dependencies.resolve!CiteApiSpecs;
     mainRouter.registerRestInterface(restInterface);
 
-    mainRouter.get("/assets/cites.css", serveStaticFile("static/cites.css"));
+    mainRouter.get("/assets/cites.css", serveStaticFile("resources/static/cites.css"));
 
     return mainRouter;
 }
