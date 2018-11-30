@@ -16,7 +16,7 @@ final class CiteSystem {
     /**
      * Creates a new System instance using the specified database instance.
      */
-    public this(ref DB db) {
+    public this(DB db) {
         this.db = db;
     }
 
@@ -95,7 +95,7 @@ final class CiteSystem {
     public void postDoModify(long id, string cite, string changedby) {
         string modifiedCite = cite;
         const lastId = this.db.modifyCite(id, modifiedCite, changedby);
-        redirect("cite?id=%d".format(lastId));
+        redirect("/cite?id=%d".format(lastId));
     }
 
     /**
@@ -106,6 +106,6 @@ final class CiteSystem {
      */
     public void postAdded(string cite, string name) {
         const lastId = this.db.addCite(cite, name);
-        redirect("cite?id=%s".format(lastId));
+        redirect("/cite?id=%s".format(lastId));
     }
 }

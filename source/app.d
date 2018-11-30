@@ -1,29 +1,49 @@
 import citesystem.server;
 
 import vibe.http.server : HTTPServerSettings;
+import vibe.http.router : URLRouter;
+
+import poodinis;
+
+public:
+// Dependenciy injection container
+auto dependencies = new shared DependencyContainer();
+
+static this() {
+    dependencies.register!(CiteApiSpecs, CiteApi);
+}
 
 void main() {
     import std.conv : to;
+    import std.format : format;
     import vibe.core.core : runApplication;
     import vibe.core.log : logInfo;
     import vibe.http.server : listenHTTP;
 
     auto settings = parseOptions();
-    auto db = createDb(settings.dbPath);
-    auto router = createRouter(db);
-    
-    listenHTTP(settings.httpSettings, router);
 
-    logInfo("Please open http://" ~ to!string(
-            settings.bindAddresses[0]) ~ ":" ~ to!string(settings.port) ~ "/ in your browser.");
+    registerDependencies(settings);
+
+    listenHTTP(settings.httpSettings, dependencies.resolve!URLRouter);
+
+    logInfo(format!"Please open http://%1$s:%2$s in your browser"(settings.bindAddresses[0], settings.port));
     runApplication();
+}
+
+private:
+void registerDependencies(SettingsHolder settings) {
+    auto db = createDb(settings.dbPath);
+
+    dependencies.register!(DB, CiteSqlite).existingInstance(cast(Object) db);
+    dependencies.register!(CiteSystem);
+    dependencies.register!URLRouter.existingInstance(createRouter);
 }
 
 /**
  * Encapsules vibe-d's HTTPServerSettings as well as some other
  * settings needed for this application.
  */
-private struct SettingsHolder {
+struct SettingsHolder {
     HTTPServerSettings httpSettings;
     string dbPath;
 
@@ -35,7 +55,7 @@ private struct SettingsHolder {
  * Returns:
  * A SettingsHolder carrying the needed information.
  */
-private auto parseOptions() {
+ SettingsHolder parseOptions() {
     import vibe.core.args : readRequiredOption;
 
     auto settings = new HTTPServerSettings;
@@ -54,24 +74,21 @@ private auto parseOptions() {
  * Returns
  * A configured URLRouter instance.
  */
-private auto createRouter(DB db) {
+auto createRouter() {
     import vibe.http.fileserver : serveStaticFile;
     import vibe.http.router : URLRouter;
     import vibe.web.web : registerWebInterface;
     import vibe.web.rest : registerRestInterface;
 
     auto mainRouter = new URLRouter;
-    auto webInterface = new CiteSystem(db);
+
+    auto webInterface = dependencies.resolve!CiteSystem;
     mainRouter.registerWebInterface(webInterface);
 
-    auto restInterface = new CiteApi(db);
+    auto restInterface = dependencies.resolve!CiteApiSpecs;
     mainRouter.registerRestInterface(restInterface);
-    // mainRouter;
-    // router.get("/api/get", &(restInterface.getRandom));
-    // router.get("/api/get/:id", &(restInterface.getById));
-    // mainRouter.post("/api/add", &(restInterface.addCite));
 
-    mainRouter.get("/assets/cites.css", serveStaticFile("static/cites.css"));
+    mainRouter.get("/assets/cites.css", serveStaticFile("resources/static/cites.css"));
 
     return mainRouter;
 }
@@ -83,7 +100,7 @@ private auto createRouter(DB db) {
  * Returns:
  * A DB instance.
  */
-private auto createDb(string dbPath) {
+DB createDb(string dbPath) {
     if (dbPath) {
         return new CiteSqlite(dbPath);
     } else {

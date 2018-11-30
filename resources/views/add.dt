@@ -2,7 +2,6 @@ extends ./layout
 
 block content
   p#desc Neue Zitate hinzufügen.
-  p Zeilenumbrüche werden ersetzt durch „ – “.
   form(action="added", method="POST")
     div Zitat:
     textarea#inputField(type="text", name="cite", autofocus=true)
