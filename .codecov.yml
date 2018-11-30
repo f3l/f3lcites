@@ -1,5 +1,14 @@
 ignore:
   - "test"
-  
-codecov:
-  branch: master
+
+coverage:
+  range: 70..90
+  round: up
+  precision: 2
+  status:
+    project:
+      enabled: yes
+      target: 70%
+    patch:
+      enabled: yes
+      target: 70%
