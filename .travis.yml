@@ -4,7 +4,7 @@ dist: trusty
 sudo: required
 
 d:
-  - dmd-2.078.3
+  - dmd-2.083.0
   - ldc
 os:
   - linux
@@ -19,10 +19,10 @@ before_install:
 
 matrix:
   include:
-  - d: dmd-2.078.3
+  - d: dmd-2.083.0
     env: BUILD_TYPE=unittest-cov
   exclude:
-  - d: dmd-2.078.3
+  - d: dmd-2.083-0
     env: BUILD_TYPE=unittest
 
 addons:
