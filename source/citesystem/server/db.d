@@ -13,6 +13,8 @@ interface DB {
     FullCiteData opIndex(long);
     /// Retrieve all cites.
     FullCiteData[] getAll();
+    /// Retrieve paginated.
+    FullCiteData[] getPaginated(size_t pagesize, size_t startcount);
     /// Add a citeation.
     long addCite(string, string) @safe;
     /// Modify a citation.
