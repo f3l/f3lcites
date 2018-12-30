@@ -8,12 +8,17 @@ public struct PaginationInfo {
     this(size_t page, size_t pagesize,size_t count) {
         this.currentPage = page;
         this.pagesize = pagesize;
-        numberOfElements = count;
+        this.numberOfElements = count;
     }
 
     @property
     const size_t lastPage() {
-        return (numberOfElements / pagesize) + 1;
+        auto numberOfFullPages = numberOfElements / pagesize;
+        if (numberOfFullPages % pagesize == 0) {
+            return numberOfFullPages + 1;
+        } else {
+            return numberOfFullPages;
+        }
     }
 
     @property
@@ -30,8 +35,8 @@ public struct PaginationInfo {
     }
 
     @property
-    const size_t firstCite() {
-        return (pagesize * (currentPage - 1)) + 1;
+    const size_t firstCiteOffset() {
+        return (pagesize * (currentPage - 1));
     }
 
     @property
@@ -41,53 +46,5 @@ public struct PaginationInfo {
             pagesize * currentPage,
             numberOfElements
         );
-    }
-}
-@system {
-    unittest {
-        import std.format : format;
-
-        const testPaginationInfo = PaginationInfo(1, 10, 5);
-        const actualLastPage = testPaginationInfo.lastPage;
-        const expectedLastPage = 1;
-
-        assert(actualLastPage == expectedLastPage,
-            format!("Got %s for last page, expected %s.")(actualLastPage, expectedLastPage)
-        );
-    }
-    unittest {
-        import std.format : format;
-
-        const testPaginationInfo = PaginationInfo(1, 10, 105);
-        const actualLastPage = testPaginationInfo.lastPage;
-        const expectedLastPage = 11;
-        assert(actualLastPage == expectedLastPage,
-            format!("Got %s for last page, expected %s.")(actualLastPage, expectedLastPage)
-        );
-    }
-    unittest {
-        import std.format : format;
-
-        const testPaginationInfo = PaginationInfo(1, 10, 5);
-        const paginationLables = testPaginationInfo.pagesToShow;
-        const paginationLabelNumber = paginationLables.length;
-        assert(
-            paginationLabelNumber == 1,
-            format!("Single page calculates wrong list of labels to print: %s instead of %s.\nLabel list was %s")
-                (paginationLabelNumber, 1, paginationLables));
-    }
-
-    unittest {
-        import std.format : format;
-        const testPaginationInfo = PaginationInfo(4, 10, 105);
-        const paginationLables = testPaginationInfo.pagesToShow;
-        const paginationLabelNumber = paginationLables.length;
-        assert(
-            paginationLabelNumber == 7,
-            format!("Single page calculates wrong list of labels to print: %s instead of %s.\nLabel list was %s")
-                (paginationLabelNumber, 7, paginationLables));
-        assert(
-            paginationLables[0] == 1,
-            format!("First label to print was %s, should have been %s")(paginationLables[0], 1));
     }
 }

@@ -66,8 +66,11 @@ public:
         db.close();
     }
 
-    override long count() {
-        return countCites.execute.oneValue!long;
+    override long count() @trusted {
+        auto resultRange = countCites.execute;
+        scope(exit) countCites.reset;
+
+        return resultRange.oneValue!long;
     }
 
     /**
@@ -119,7 +122,8 @@ public:
         import std.array : array;
 
         getPaginatedQ.bind(":pagesize", paginationInfo.pagesize);
-        getPaginatedQ.bind(":startcount", paginationInfo.firstCite);
+        getPaginatedQ.bind(":startcount", paginationInfo.firstCiteOffset);
+        scope(exit) getPaginatedQ.reset;
 
         auto replyPage =  getPaginatedQ.execute;
         FullCiteData[] cites = map!(a => toFullCiteData(a))(replyPage).array();
