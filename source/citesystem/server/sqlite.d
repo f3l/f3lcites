@@ -20,6 +20,7 @@ private enum string[] PREPARE_DB = [
 final class CiteSqlite : DB {
 private:
     import citesystem.rest : FullCiteData;
+    import citesystem.server.pageinationinfo : PageinationInfo;
     import d2sqlite3 : Database, Row, Statement, SQLITE_OPEN_READWRITE, SQLITE_OPEN_CREATE;
     import std.array : empty;
     import std.datetime : Date;
@@ -65,6 +66,10 @@ public:
         db.close();
     }
 
+    override long count() {
+        return countCites.execute.oneValue!long;
+    }
+
     /**
      * Retrieves and returns a random citation from the Database.
      * Returns:
@@ -72,7 +77,7 @@ public:
      */
     override FullCiteData getRandomCite() @trusted {
         import std.random : uniform;
-        auto records = countCites.execute.oneValue!long;
+        auto records = this.count;
         const offset = uniform(0, records);
         randomCite.bind(":offset", offset);
         auto resCite = randomCite.execute();
@@ -108,12 +113,13 @@ public:
         return cites;
     }
 
-    override FullCiteData[] getPaginated(size_t pagesize, size_t startcount) {
+    override FullCiteData[] getPaginated(const PageinationInfo paginationInfo)
+    do {
         import std.algorithm : map;
         import std.array : array;
 
-        getPaginatedQ.bind(":pagesize", pagesize);
-        getPaginatedQ.bind(":startcount", startcount);
+        getPaginatedQ.bind(":pagesize", paginationInfo.pagesize);
+        getPaginatedQ.bind(":startcount", paginationInfo.firstCite);
 
         auto replyPage =  getPaginatedQ.execute;
         FullCiteData[] cites = map!(a => toFullCiteData(a))(replyPage).array();

@@ -1,0 +1,3 @@
+div.pagination_footer
+    a.pagination_first(href="/cites/all_paginated?page=1&pagesize=#{this.pageinfo.pagesize}") <<
+    a.pagination_last(href="/cites/all_paginated?page=#{this.pageinfo.lastpage}") >>

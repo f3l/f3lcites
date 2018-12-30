@@ -2,7 +2,7 @@ extends ./layout
 
 block content
   - import citesystem.rest : FullCiteData;
-  p#desc Alle #{llen} bekannten Zitate.
+  p#desc Alle #{paginationInfo.numberOfElements} bekannten Zitate. - Seite #{paginationInfo.currentPage} von #{paginationInfo.lastPage}
   div#citebody
     - foreach(FullCiteData cite; cites)
       include rendercite
