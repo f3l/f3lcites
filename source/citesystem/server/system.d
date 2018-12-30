@@ -6,7 +6,7 @@ module citesystem.server.system;
 final class CiteSystem {
     private import citesystem.rest : FullCiteData;
     private import citesystem.server.db : DB;
-    private import citesystem.server.pageinationinfo : PageinationInfo;
+    private import citesystem.server.paginationinfo : PaginationInfo;
     private import std.conv : to;
     private import std.random : uniform;
     private import std.string : format;
@@ -75,7 +75,8 @@ final class CiteSystem {
      */
     public void getAllPaginated(size_t page, size_t pagesize) {
         string title = "Erste Zitate";
-        const paginationInfo = PageinationInfo(page, pagesize, this.db.count());
+        auto count = this.db.count();
+        const paginationInfo = PaginationInfo(page, pagesize, this.db.count());
         FullCiteData[] cites = this.db.getPaginated(paginationInfo);
         render!("all_paginated.dt", title, cites, paginationInfo);
     }

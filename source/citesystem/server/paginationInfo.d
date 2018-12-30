@@ -1,6 +1,6 @@
-module citesystem.server.pageinationinfo;
+module citesystem.server.paginationinfo;
 
-public struct PageinationInfo {
+public struct PaginationInfo {
     const size_t pagesize;
     const size_t currentPage;
     const size_t numberOfElements;
@@ -48,20 +48,20 @@ public struct PageinationInfo {
         import std.stdio : writeln;
         import std.format : format;
 
-        auto testPageinationInfo = PageinationInfo();
-        testPageinationInfo.pagesize = 10;
-        testPageinationInfo.currentPage = 1;
-        testPageinationInfo.numberOfElements = 5;
-
-        auto actualLastPage = testPageinationInfo.lastPage;
+        auto testPaginationInfo = PaginationInfo(1, 10, 5);
+        auto actualLastPage = testPaginationInfo.lastPage;
         auto expectedLastPage = 1;
 
         assert(actualLastPage == expectedLastPage,
             format!("Got %s for last page, expected %s.")(actualLastPage, expectedLastPage)
         );
+    }
+    unittest {
+        import std.stdio : writeln;
+        import std.format : format;
 
-        testPageinationInfo.numberOfElements = 105;
-        actualLastPage = testPageinationInfo.lastPage;
+        auto testPaginationInfo = PaginationInfo(1, 10, 105)
+        actualLastPage = testPaginationInfo.lastPage;
         expectedLastPage = 11;
         assert(actualLastPage == expectedLastPage,
             format!("Got %s for last page, expected %s.")(actualLastPage, expectedLastPage)
@@ -71,26 +71,23 @@ public struct PageinationInfo {
         import std.stdio : writeln;
         import std.format : format;
 
-        auto testPageinationInfo = PageinationInfo();
-        testPageinationInfo.pagesize = 10;
-        testPageinationInfo.currentPage = 1;
-        testPageinationInfo.numberOfElements = 5;
-
-        auto paginationLables = testPageinationInfo.pagesToShow;
-        auto pageinationLabelNumber = paginationLables.length;
+        auto testPaginationInfo = PaginationInfo(1, 10, 5);
+        auto paginationLables = testPaginationInfo.pagesToShow;
+        auto paginationLabelNumber = paginationLables.length;
         assert(
-            pageinationLabelNumber == 1,
+            paginationLabelNumber == 1,
             format!("Single page calculates wrong list of labels to print: %s instead of %s.\nLabel list was %s")
-                (pageinationLabelNumber, 1, paginationLables));
+                (paginationLabelNumber, 1, paginationLables));
+    }
 
-        testPageinationInfo.currentPage = 4;
-        testPageinationInfo.numberOfElements = 105;
-        paginationLables = testPageinationInfo.pagesToShow;
-        pageinationLabelNumber = paginationLables.length;
+    unittest {
+        auto testPaginationInfo = PaginationInfo(4, 10, 105);
+        paginationLables = testPaginationInfo.pagesToShow;
+        paginationLabelNumber = paginationLables.length;
         assert(
-            pageinationLabelNumber == 7,
+            paginationLabelNumber == 7,
             format!("Single page calculates wrong list of labels to print: %s instead of %s.\nLabel list was %s")
-                (pageinationLabelNumber, 7, paginationLables));
+                (paginationLabelNumber, 7, paginationLables));
         assert(
             paginationLables[0] == 1,
             format!("First label to print was %s, should have been %s")(paginationLables[0], 1));

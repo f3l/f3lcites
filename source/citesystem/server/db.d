@@ -1,6 +1,6 @@
 module citesystem.server.db;
 
-private import citesystem.server.pageinationinfo : PageinationInfo;
+private import citesystem.server.paginationinfo : PaginationInfo;
 
 /**
  * Defines a commoninterface for Database adaptors.
@@ -16,7 +16,7 @@ interface DB {
     /// Retrieve all cites.
     FullCiteData[] getAll();
     /// Retrieve paginated. Takes page number and -size.
-    FullCiteData[] getPaginated(const PageinationInfo);
+    FullCiteData[] getPaginated(const PaginationInfo);
     /// Get number of cites.
     long count();
     /// Add a citeation.

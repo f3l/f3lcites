@@ -20,7 +20,7 @@ private enum string[] PREPARE_DB = [
 final class CiteSqlite : DB {
 private:
     import citesystem.rest : FullCiteData;
-    import citesystem.server.pageinationinfo : PageinationInfo;
+    import citesystem.server.paginationinfo : PaginationInfo;
     import d2sqlite3 : Database, Row, Statement, SQLITE_OPEN_READWRITE, SQLITE_OPEN_CREATE;
     import std.array : empty;
     import std.datetime : Date;
@@ -59,7 +59,7 @@ public:
         this.modCite1 = db.prepare(
                 "INSERT INTO changes (citeid, changedby) VALUES (:citeid, :changedby)");
         this.modCite2 = db.prepare("UPDATE OR IGNORE cites SET cite = :cite WHERE id == :id");
-        this.countCites = db.prepare("SELECT COUNT(*) FROM cites");
+        this.countCites = db.prepare("SELECT count(*) FROM cites");
     }
 
     ~this() {
@@ -113,7 +113,7 @@ public:
         return cites;
     }
 
-    override FullCiteData[] getPaginated(const PageinationInfo paginationInfo)
+    override FullCiteData[] getPaginated(const PaginationInfo paginationInfo)
     do {
         import std.algorithm : map;
         import std.array : array;
