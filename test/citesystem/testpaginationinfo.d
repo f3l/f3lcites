@@ -56,6 +56,15 @@ private import citesystem.server.paginationinfo : PaginationInfo;
     paginationLables[0].shouldEqual(6);
 }
 
+@("Labels to print, 2nd end case")
+@system unittest {
+    const testPaginationInfo = PaginationInfo(7, 6, 42);
+    const paginationLables = testPaginationInfo.pagesToShow;
+    const paginationLabelNumber = paginationLables.length;
+    paginationLabelNumber.shouldEqual(4);
+    paginationLables[0].shouldEqual(4);
+}
+
 @("Offset calculation")
 @system unittest {
     PaginationInfo(1, 10, 5).firstCiteOffset.shouldEqual(0);
