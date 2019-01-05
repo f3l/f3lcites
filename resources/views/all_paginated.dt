@@ -6,3 +6,4 @@ block content
   div#citebody
     - foreach(FullCiteData cite; cites)
       include rendercite
+  include pagination_footer
