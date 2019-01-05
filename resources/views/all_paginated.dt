@@ -2,7 +2,9 @@ extends ./layout
 
 block content
   - import citesystem.rest : FullCiteData;
-  p#desc Alle #{llen} bekannten Zitate.
+  p#desc.
+    F3L-Zitate Seite #{paginationInfo.currentPage}/#{paginationInfo.lastPage} – #[a(href="/all") Alle anzeigen]
   div#citebody
     - foreach(FullCiteData cite; cites)
       include rendercite
+  include pagination_footer

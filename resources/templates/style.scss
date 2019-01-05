@@ -103,3 +103,13 @@ html {
 .clear {
     clear: both;
 }
+
+.pagination_footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .pagination {
+        margin: 4px 5px;
+    }
+}

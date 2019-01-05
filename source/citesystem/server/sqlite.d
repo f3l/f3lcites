@@ -18,25 +18,31 @@ private enum string[] PREPARE_DB = [
  * Sqlite implementation of the DB interface.
  */
 final class CiteSqlite : DB {
-    private import citesystem.rest : FullCiteData;
-    private import d2sqlite3 : Database, Row, Statement, SQLITE_OPEN_READWRITE, SQLITE_OPEN_CREATE;
-    private import std.array : empty;
-    private import std.datetime : Date;
+private:
+    import citesystem.rest : FullCiteData;
+    import citesystem.server.paginationinfo : PaginationInfo;
+    import d2sqlite3 : Database, Row, Statement, SQLITE_OPEN_READWRITE, SQLITE_OPEN_CREATE;
+    import std.array : empty;
+    import std.datetime : Date;
 
-    private string dbname;
-    private Database db;
-    private Statement randomCite;
-    private Statement getCite;
-    private Statement addCiteQ;
-    private Statement modCite1;
-    private Statement modCite2;
+    string dbname;
+    Database db;
+    Statement randomCite;
+    Statement getCite;
+    Statement getAllCites;
+    Statement getPaginatedQ;
+    Statement addCiteQ;
+    Statement modCite1;
+    Statement modCite2;
+    Statement countCites;
 
+public:
     /**
      * Creates a new Sqlite connection, including setup of the database if none exists.
      * Params:
      * dbname = Nameof the database. This defaults to a non-persistent in-memory database.
      */
-    public this(string dbname = ":memory:") {
+    this(string dbname = ":memory:") {
         this.dbname = dbname;
         this.db = Database(this.dbname, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE);
         //        scope(exit) this.db.close();
@@ -46,14 +52,25 @@ final class CiteSqlite : DB {
         this.randomCite = db.prepare(
                 "SELECT * FROM showcites ORDER BY added DESC LIMIT :offset, 1");
         this.getCite = db.prepare("SELECT * FROM showcites WHERE id==:id");
+        this.getAllCites = db.prepare("SELECT * FROM showcites ORDER BY id DESC");
+        this.getPaginatedQ = db.prepare("SELECT * FROM showcites ORDER BY id DESC " ~
+         "LIMIT :pagesize OFFSET :startcount");
         this.addCiteQ = db.prepare("INSERT INTO cites (cite, addedby) VALUES (:cite,:addedby)");
         this.modCite1 = db.prepare(
                 "INSERT INTO changes (citeid, changedby) VALUES (:citeid, :changedby)");
         this.modCite2 = db.prepare("UPDATE OR IGNORE cites SET cite = :cite WHERE id == :id");
+        this.countCites = db.prepare("SELECT count(*) FROM cites");
     }
 
-    public ~this() {
+    ~this() {
         db.close();
+    }
+
+    override long count() @trusted {
+        auto resultRange = countCites.execute;
+        scope(exit) countCites.reset;
+
+        return resultRange.oneValue!long;
     }
 
     /**
@@ -61,9 +78,9 @@ final class CiteSqlite : DB {
      * Returns:
      * The retrieved citation.
      */
-    public FullCiteData getRandomCite() @trusted {
+    override FullCiteData getRandomCite() @trusted {
         import std.random : uniform;
-        auto records = this.db.execute("SELECT COUNT(*) FROM cites").oneValue!long;
+        auto records = this.count;
         const offset = uniform(0, records);
         randomCite.bind(":offset", offset);
         auto resCite = randomCite.execute();
@@ -81,7 +98,7 @@ final class CiteSqlite : DB {
      * Returns:
      * The retrieved citation.
      */
-    public FullCiteData get(long id) {
+    override FullCiteData get(long id) {
         return this[id];
     }
 
@@ -90,12 +107,26 @@ final class CiteSqlite : DB {
      * Returns:
      * An array containing all cites stored in the database.
      */
-    public FullCiteData[] getAll() {
+    override FullCiteData[] getAll() {
         import std.algorithm : map;
         import std.array : array;
 
-        auto replyAll = this.db.execute("SELECT * FROM showcites ORDER BY id DESC");
+        auto replyAll = getAllCites.execute;
         FullCiteData[] cites = map!(a => toFullCiteData(a))(replyAll).array();
+        return cites;
+    }
+
+    override FullCiteData[] getPaginated(const PaginationInfo paginationInfo)
+    do {
+        import std.algorithm : map;
+        import std.array : array;
+
+        getPaginatedQ.bind(":pagesize", paginationInfo.pagesize);
+        getPaginatedQ.bind(":startcount", paginationInfo.firstCiteOffset);
+        scope(exit) getPaginatedQ.reset;
+
+        auto replyPage =  getPaginatedQ.execute;
+        FullCiteData[] cites = map!(a => toFullCiteData(a))(replyPage).array();
         return cites;
     }
 
@@ -107,7 +138,7 @@ final class CiteSqlite : DB {
      * Returns:
      * The id of the added citation.
      */
-    public long addCite(string cite, string name) @trusted {
+    override long addCite(string cite, string name) @trusted {
         addCiteQ.bind(":cite", cite);
         addCiteQ.bind(":addedby", name);
         addCiteQ.execute();
@@ -125,7 +156,7 @@ final class CiteSqlite : DB {
      * Returns:
      * The id of the modified citation.
      */
-    public long modifyCite(long id, string cite, string name) {
+    override long modifyCite(long id, string cite, string name) {
         modCite1.bind(":citeid", id);
         modCite1.bind(":changedby", name);
         modCite2.bind(":cite", cite);
@@ -150,7 +181,7 @@ final class CiteSqlite : DB {
      *    FullCiteData of the cite with passed id, if it exists.
      *    FullCiteData with id "0" otherwise
      */
-    public FullCiteData opIndex(long id) @trusted
+    override FullCiteData opIndex(long id) @trusted
     in {
         assert(id > 0);
     }
@@ -168,6 +199,8 @@ final class CiteSqlite : DB {
         return cite;
     }
 
+private:
+
     /**********
      * toFullCiteData
      *
@@ -177,7 +210,7 @@ final class CiteSqlite : DB {
      * Returns: FullCiteData of the passed object
      * Note:    Will be replaced by cast-operator soon.
      */
-    private FullCiteData toFullCiteData(Row data) {
+    FullCiteData toFullCiteData(Row data) {
         const id = data.peek!int("id");
         string cite = data.peek!string("cite");
         string isostring = data.peek!string("added");

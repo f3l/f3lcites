@@ -15,7 +15,15 @@ to
  * Add Quotes
  * Get a random quote
  * List existing quotes
- 
+
+## Compilation ##
+
+For a "release"-type binary with freshly generated CSS file, simply run
+
+```
+dub run --compiler=ldc2 -a=x86_64 -b=debug -c=generateCss
+```
+
 ## Security Considerations ##
 
 This tool is especially thought to run _on the same host as f3lbot_, and shall
