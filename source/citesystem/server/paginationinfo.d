@@ -79,7 +79,7 @@ public struct PaginationInfo {
 
     @property
     bool needsNextPage() const {
-        return currentPage != lastCite;
+        return currentPage != lastPage;
     }
 
     @property

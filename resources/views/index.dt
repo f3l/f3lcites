@@ -2,4 +2,4 @@ extends ./layout
 
 block content
   p#desc Willkommen auf der internen Zitat-Datenbank des F3L-Teams!
-  p Hier können Zitat hinzugefügt sowie die bereits eingepflegten betrachtet werden.
+  p Hier können Zitat hinzugefügt sowie bereits eingepflegte betrachtet werden.
