@@ -1,5 +1,5 @@
 div(class="menu", id="menu")
   a(class="menuitem", href="index") Startseite
   a(class="menuitem", href="add") Hinzufügen
-  a(class="menuitem", href="all") Alle
+  a(class="menuitem", href="all_paginated?pagesize=10&page=1") Alle
   a(class="menuitem", href="random") Zufällig
