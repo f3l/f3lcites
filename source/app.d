@@ -36,7 +36,7 @@ void registerDependencies(SettingsHolder settings) {
 
     dependencies.register!(DB, CiteSqlite).existingInstance(cast(Object) db);
     dependencies.register!(CiteSystem);
-    dependencies.register!URLRouter.existingInstance(createRouter);
+    dependencies.register!URLRouter.existingInstance(createRouter(settings));
 }
 
 /**
@@ -46,6 +46,7 @@ void registerDependencies(SettingsHolder settings) {
 struct SettingsHolder {
     HTTPServerSettings httpSettings;
     string dbPath;
+    string relativeBasePath;
 
     alias httpSettings this;
 }
@@ -63,8 +64,9 @@ struct SettingsHolder {
     settings.bindAddresses = readRequiredOption!(string[])("a|address", "Addresses to listen on");
 
     auto dbPath = readRequiredOption!(string)("d|dbpath", "Path to SQLite DB");
+    auto relativeBasePath = readRequiredOption!(string)("b|basePath", "Base path for resolution of the CSS file");
 
-    return SettingsHolder(settings, dbPath);
+    return SettingsHolder(settings, dbPath, relativeBasePath);
 }
 
 /**
@@ -74,7 +76,7 @@ struct SettingsHolder {
  * Returns
  * A configured URLRouter instance.
  */
-auto createRouter() {
+auto createRouter(SettingsHolder settings) {
     import vibe.http.fileserver : serveStaticFile;
     import vibe.http.router : URLRouter;
     import vibe.web.web : registerWebInterface;
@@ -88,7 +90,7 @@ auto createRouter() {
     auto restInterface = dependencies.resolve!CiteApiSpecs;
     mainRouter.registerRestInterface(restInterface);
 
-    mainRouter.get("/assets/cites.css", serveStaticFile("resources/static/cites.css"));
+    mainRouter.get("/assets/cites.css", serveStaticFile(settings.relativeBasePath ~ "resources/static/cites.css"));
 
     return mainRouter;
 }
