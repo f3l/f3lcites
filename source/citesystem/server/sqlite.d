@@ -162,9 +162,9 @@ public:
         modCite2.bind(":cite", cite);
         modCite2.bind(":id", id);
         modCite1.execute();
+        scope(exit) modCite1.reset();
         modCite2.execute();
-        modCite1.reset();
-        modCite2.reset();
+        scope(exit) modCite2.reset();
         return id;
     }
 
