@@ -1,10 +1,11 @@
 div.citecontainer
   a.citeid(href="cite?id=#{cite.id}") #{cite.id}
   div.cite
-    - import std.string :replace;
+    - import std.string : replace;
     div.citetext #{cite.cite.replace("\r\n", " – ")}
       a.edit(href="modify?id=#{cite.id}") (Edit)
     div.added Added by #{cite.addedby} (#{cite.added})
-    div.changed Last changed by #{cite.changedby} (#{cite.changed})
+    - if (cite.changedby != null)
+      div.changed Last changed by #{cite.changedby} (#{cite.changed})
     div.clear
   div.clear
