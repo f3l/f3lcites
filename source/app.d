@@ -5,10 +5,10 @@ import vibe.http.router : URLRouter;
 
 import poodinis;
 
-public:
 // Dependenciy injection container
-auto dependencies = new shared DependencyContainer();
+private auto dependencies = new shared DependencyContainer();
 
+public:
 static this() {
     dependencies.register!(CiteApiSpecs, CiteApi);
 }
