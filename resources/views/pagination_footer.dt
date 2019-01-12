@@ -1,16 +1,16 @@
 div.pagination_footer
     - if (paginationInfo.needsPreviousPage)
-        a.pagination.pagination_first(href="/all_paginated?page=1&pagesize=#{paginationInfo.pagesize}") «
-        a.pagination.pagination_previous(href="/all_paginated?page=#{paginationInfo.currentPage - 1}&pagesize=#{paginationInfo.pagesize}") ‹
+        a.pagination.pagination_first(href="all_paginated?page=1&pagesize=#{paginationInfo.pagesize}") «
+        a.pagination.pagination_previous(href="all_paginated?page=#{paginationInfo.currentPage - 1}&pagesize=#{paginationInfo.pagesize}") ‹
     - if (paginationInfo.needsFrontTruncation)
         a.pagination.pagination_truncation …
     - foreach(ulong mark; paginationInfo.pagesToShow)
         - if (mark == paginationInfo.currentPage)
             a.pagination_mark.pagination.pagination_current #{mark}
         - else
-            a.pagination.pagination_mark(href="/all_paginated?page=#{mark}&pagesize=#{paginationInfo.pagesize}") #{mark}
+            a.pagination.pagination_mark(href="all_paginated?page=#{mark}&pagesize=#{paginationInfo.pagesize}") #{mark}
     - if (paginationInfo.needsBackTruncation)
         a.pagination.pagination_truncation …
     - if (paginationInfo.needsNextPage)
-        a.pagination.pagination_next(href="/all_paginated?page=#{paginationInfo.currentPage + 1}&pagesize=#{paginationInfo.pagesize}") ›
-        a.pagination.pagination_last(href="/all_paginated?pagesize=#{paginationInfo.pagesize}&page=#{paginationInfo.lastPage}") »
+        a.pagination.pagination_next(href="all_paginated?page=#{paginationInfo.currentPage + 1}&pagesize=#{paginationInfo.pagesize}") ›
+        a.pagination.pagination_last(href="all_paginated?pagesize=#{paginationInfo.pagesize}&page=#{paginationInfo.lastPage}") »
