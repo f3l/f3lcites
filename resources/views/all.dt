@@ -2,7 +2,7 @@ extends ./layout
 
 block content
   - import citesystem.rest : FullCiteData;
-  p#desc Alle #{llen} bekannten Zitate. – #[a(href="/all_paginated?pagesize=10&page=1") Seitenweise]
+  p#desc Alle #{llen} bekannten Zitate. – #[a(href="all_paginated?pagesize=10&page=1") Seitenweise]
   div#citebody
     - foreach(FullCiteData cite; cites)
       include rendercite
