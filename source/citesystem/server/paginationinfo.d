@@ -16,7 +16,7 @@ public struct PaginationInfo {
     @property
     size_t lastPage() const {
         auto numberOfFullPages = numberOfElements / pagesize;
-        if (numberOfFullPages % pagesize == 0) {
+        if (numberOfElements % pagesize != 0) {
             return numberOfFullPages + 1;
         } else {
             return numberOfFullPages;

@@ -14,6 +14,16 @@ private import citesystem.server.paginationinfo : PaginationInfo;
     actualLastPage.shouldEqual(expectedLastPage);
 }
 
+@("Last page calculation, actual case")
+@system unittest {
+    const testPaginationInfo = PaginationInfo(1, 10, 52);
+    const actualLastPage = testPaginationInfo.lastPage;
+    const expectedLastPage = 6;
+
+    actualLastPage.shouldEqual(expectedLastPage);
+}
+
+
 @("Last page calculation, harder case")
 @system unittest {
     const testPaginationInfo = PaginationInfo(1, 10, 105);
