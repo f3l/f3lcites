@@ -25,7 +25,7 @@ final class CiteSystem {
      * Default view.
      */
     public void get() const {
-        string title = "Index";
+        const title = "Index";
         render!("index.dt", title);
     }
 
@@ -42,9 +42,9 @@ final class CiteSystem {
      * id = The numerical id of the citation to view.
      */
     public void getCite(long id) {
-        string title = "Number " ~ id.to!string;
-        FullCiteData cite = this.db.get(id);
-        string desc = "Zitat Nr %d".format(id);
+        const title = "Number " ~ id.to!string;
+        const cite = this.db.get(id);
+        const desc = "Zitat Nr %d".format(id);
         render!("cite.dt", title, cite, desc);
     }
 
@@ -52,9 +52,9 @@ final class CiteSystem {
      * Renders a random citation.
      */
     public void getRandom() {
-        string title = "Zufälliges Zitat";
-        string desc = title;
-        FullCiteData cite = this.db.getRandomCite();
+        const title = "Zufälliges Zitat";
+        const desc = title;
+        const cite = this.db.getRandomCite();
         render!("cite.dt", title, cite, desc);
     }
 
@@ -62,9 +62,9 @@ final class CiteSystem {
      * Renders all citations.
      */
     public void getAll() {
-        string title = "Alle Zitate";
+        const title = "Alle Zitate";
         // Sort with descending key, e.g. newest quote in front
-        FullCiteData[] cites = this.db.getAll();
+        const cites = this.db.getAll();
         const llen = cites.length;
         const start = llen;
         render!("all.dt", title, cites, llen, start);
@@ -74,18 +74,15 @@ final class CiteSystem {
      * Get pageinated results (mock only)
      */
     public void getAllPaginated(size_t page, size_t pagesize) {
-        string title = "Erste Zitate";
+        const title = "Erste Zitate";
         const count = this.db.count();
-        const count2 = this.db.count();
         const paginationInfo = PaginationInfo(page, pagesize, count);
-        FullCiteData[] cites = this.db.getPaginated(paginationInfo);
+        const cites = this.db.getPaginated(paginationInfo);
         render!("all_paginated.dt", title, cites, paginationInfo);
     }
 
-    public void getAdd()
-    // const
-     {
-        string title = "Zitat hinzufügen";
+    public void getAdd() {
+        const title = "Zitat hinzufügen";
         render!("add.dt", title);
     }
 
@@ -95,8 +92,8 @@ final class CiteSystem {
      */
     public void getModify(long id) {
         const FullCiteData cite = this.db.get(id);
-        string citetext = cite.cite;
-        string title = "Zitat Nr. %d bearbeiten".format(id);
+        const citetext = cite.cite;
+        const title = "Zitat Nr. %d bearbeiten".format(id);
         render!("modify.dt", id, title, citetext);
     }
 

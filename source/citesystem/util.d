@@ -22,6 +22,5 @@ auto toJson(T)(T input) {
  * The JSON string representation of the input object.
  */
 string toJsonString(T)(T input) {
-    import vibe.data.json;
     return input.toJson.to!string;
 }
