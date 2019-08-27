@@ -3,7 +3,7 @@ extends ./layout
 block content
   - import citesystem.rest : FullCiteData;
   p#desc.
-    F3L-Zitate Seite #{paginationInfo.currentPage}/#{paginationInfo.lastPage} – #[a(href="/all") Alle anzeigen]
+    F3L-Zitate Seite #{paginationInfo.currentPage}/#{paginationInfo.lastPage} – #[a(href="all") Alle anzeigen]
   div#citebody
     - foreach(FullCiteData cite; cites)
       include rendercite
