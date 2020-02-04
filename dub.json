@@ -8,10 +8,11 @@
 	],
 	"license": "MIT",
 	"dependencies": {
-		"d2sqlite3": "~>0.18.1",
-		"vibe-d:http": "~>0.8.4",
-		"vibe-d:web": "~>0.8.4",
-		"vibe-d:tls": "~>0.8.4",
+		"d2sqlite3": "~>0.18.3",
+		"vibe-d:http": "~>0.8.6",
+		"vibe-d:core": "~>0.8.6",
+		"vibe-d:web": "~>0.8.6",
+		"vibe-d:tls": "~>0.8.6",
 		"poodinis": "~>8.0.3"
 	},
 	"subConfigurations": {
