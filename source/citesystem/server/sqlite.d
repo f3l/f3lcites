@@ -53,8 +53,8 @@ public:
                 "SELECT * FROM showcites ORDER BY added DESC LIMIT :offset, 1");
         this.getCite = db.prepare("SELECT * FROM showcites WHERE id==:id");
         this.getAllCites = db.prepare("SELECT * FROM showcites ORDER BY id DESC");
-        this.getPaginatedQ = db.prepare("SELECT * FROM showcites ORDER BY id DESC " ~
-         "LIMIT :pagesize OFFSET :startcount");
+        this.getPaginatedQ = db.prepare(
+                "SELECT * FROM showcites ORDER BY id DESC " ~ "LIMIT :pagesize OFFSET :startcount");
         this.addCiteQ = db.prepare("INSERT INTO cites (cite, addedby) VALUES (:cite,:addedby)");
         this.modCite1 = db.prepare(
                 "INSERT INTO changes (citeid, changedby) VALUES (:citeid, :changedby)");
@@ -67,8 +67,9 @@ public:
     }
 
     override long count() @trusted {
+        scope (exit)
+            countCites.reset;
         auto resultRange = countCites.execute;
-        scope(exit) countCites.reset;
 
         return resultRange.oneValue!long;
     }
@@ -80,6 +81,7 @@ public:
      */
     override FullCiteData getRandomCite() @trusted {
         import std.random : uniform;
+
         auto records = this.count;
         const offset = uniform(0, records);
         randomCite.bind(":offset", offset);
@@ -116,16 +118,16 @@ public:
         return cites;
     }
 
-    override FullCiteData[] getPaginated(const PaginationInfo paginationInfo)
-    do {
+    override FullCiteData[] getPaginated(const PaginationInfo paginationInfo)do {
         import std.algorithm : map;
         import std.array : array;
 
+        scope (exit)
+            getPaginatedQ.reset;
         getPaginatedQ.bind(":pagesize", paginationInfo.pagesize);
         getPaginatedQ.bind(":startcount", paginationInfo.firstCiteOffset);
-        scope(exit) getPaginatedQ.reset;
 
-        auto replyPage =  getPaginatedQ.execute;
+        auto replyPage = getPaginatedQ.execute;
         FullCiteData[] cites = map!(a => toFullCiteData(a))(replyPage).array();
         return cites;
     }
@@ -139,11 +141,12 @@ public:
      * The id of the added citation.
      */
     override long addCite(string cite, string name) @trusted {
+        scope (exit)
+            addCiteQ.reset();
         addCiteQ.bind(":cite", cite);
         addCiteQ.bind(":addedby", name);
         addCiteQ.execute();
         const lastid = this.db.lastInsertRowid();
-        addCiteQ.reset();
         return lastid;
     }
 
@@ -157,14 +160,16 @@ public:
      * The id of the modified citation.
      */
     override long modifyCite(long id, string cite, string name) {
+        scope (exit) {
+            modCite1.reset();
+            modCite2.reset();
+        }
         modCite1.bind(":citeid", id);
         modCite1.bind(":changedby", name);
         modCite2.bind(":cite", cite);
         modCite2.bind(":id", id);
         modCite1.execute();
-        scope(exit) modCite1.reset();
         modCite2.execute();
-        scope(exit) modCite2.reset();
         return id;
     }
 
@@ -186,6 +191,8 @@ public:
         assert(id > 0);
     }
     body {
+        scope (exit)
+            getCite.reset();
         getCite.bind(":id", id);
         auto resCite = getCite.execute();
         FullCiteData cite;
@@ -195,7 +202,6 @@ public:
             Row data = resCite.front();
             cite = toFullCiteData(data);
         }
-        getCite.reset();
         return cite;
     }
 
